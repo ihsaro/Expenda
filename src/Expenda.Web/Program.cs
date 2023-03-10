@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 });
 
 // Add services to the container.
+builder.Services.AddControllers();
+
 builder.Services
     .RegisterApplicationDependencies()
     .RegisterInfrastructureDependencies(builder.Configuration);
@@ -51,6 +53,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.MapControllers();
 
 app.UseStaticFiles();
 
