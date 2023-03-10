@@ -1,29 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Expenda.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Expenda.Infrastructure.Persistence;
 
-internal class ApplicationDbContext : DbContext
+internal class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 {
-    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
     public DbSet<Expense> Expenses => Set<Expense>();
     public DbSet<MonthlyBudget> MonthlyBudgets => Set<MonthlyBudget>();
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> context) : base(context)
     {
-    }
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        builder
-            .Entity<ApplicationUser>()
-            .HasIndex(a => a.Username)
-            .IsUnique();
-        
-        builder
-            .Entity<ApplicationUser>()
-            .HasIndex(a => a.EmailAddress)
-            .IsUnique();
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

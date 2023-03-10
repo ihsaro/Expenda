@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Expenda.Application.Models;
 
-public class LoginRequest
+public class VerifyUserCredentialRequest
 {
     [Required]
     [MinLength(10)]

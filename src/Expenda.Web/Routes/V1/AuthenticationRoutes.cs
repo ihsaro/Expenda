@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Expenda.Web.Routes.Configuration;
 using Expenda.Application.Models;
 using Expenda.Application.Services.Interfaces;
+using Expenda.Application.Architecture.Security;
 
 namespace Expenda.Web.Routes.V1;
 
@@ -21,13 +22,28 @@ public sealed class AuthenticationRoutes : IRoute
 
     private async Task<IResult> Register([FromBody] RegistrationRequest request, [FromServices] IAuthenticationService service, CancellationToken token = default)
     {
-        var result = await service.Register(request, token);
+        var result = await service.RegisterUser(request, token);
         return result.Success && result.ResultObject is not null ? Results.Created($"api/v1/authentication/register/{result.ResultObject.Id}", result) : Results.BadRequest(result);
     }
 
-    private async Task<IResult> Login([FromBody] LoginRequest request, [FromServices] IAuthenticationService service, CancellationToken token = default)
+    private async Task<IResult> Login([FromBody] VerifyUserCredentialRequest request, [FromServices] IAuthenticationService service, [FromServices] IApplicationTokenManager tokenManager, [FromServices] HttpContext context, CancellationToken token = default)
     {
-        var result = await service.Login(request, token);
-        return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+        var result = await service.VerifyUserCredential(request, token);
+
+        if (result)
+        {
+            var jwt = tokenManager.GenerateAndGetToken(request.Username);
+
+            context.Response.Cookies.Append("at", jwt, new CookieOptions()
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax
+            });
+
+            return Results.Ok();
+        }
+
+        return Results.Unauthorized();
     }
 }

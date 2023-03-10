@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Expenda.Domain.Entities;
 
-public class ApplicationUser : BaseEntity
+public class ApplicationUser : IdentityUser<int>
 {
     [Required]
     [MinLength(10)]
@@ -13,18 +15,4 @@ public class ApplicationUser : BaseEntity
     [MinLength(10)]
     [MaxLength(250)]
     public required string LastName { get; set; }
-
-    [Required]
-    [EmailAddress]
-    public required string EmailAddress { get; set; }
-
-    [Required]
-    [MinLength(10)]
-    [MaxLength(100)]
-    public required string Username { get; set; }
-
-    [Required]
-    [MinLength(10)]
-    [MaxLength(100)]
-    public required string Password { get; set; }
 }
