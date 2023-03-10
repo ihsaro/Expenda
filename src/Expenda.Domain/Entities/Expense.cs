@@ -18,6 +18,9 @@ public class Expense : BaseEntity
     
     [Required]
     public int Quantity { get; set; }
+
+    [Required]
+    public DateOnly TransactionDate { get; set; }
     
     [Required]
     [ForeignKey(nameof(ApplicationUser))]

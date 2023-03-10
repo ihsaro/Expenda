@@ -1,3 +1,4 @@
+using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Security;
 using Expenda.Application.Models;
@@ -8,10 +9,12 @@ namespace Expenda.Application.Services;
 
 internal class AuthenticationService : IAuthenticationService
 {
+    private readonly IMapper _mapper;
     private readonly IApplicationUserManager _userManager;
 
-    public AuthenticationService(IApplicationUserManager userManager)
+    public AuthenticationService(IMapper mapper, IApplicationUserManager userManager)
     {
+        _mapper = mapper;
         _userManager = userManager;
     }
 
@@ -21,17 +24,6 @@ internal class AuthenticationService : IAuthenticationService
         return user == null || !await _userManager.CheckPasswordAsync(user, request.Password);
     }
 
-    public async Task<TransactionResult<RegistrationResponse>> RegisterUser(RegistrationRequest request, CancellationToken token = default)
-    {
-        var result = await _userManager.CreateAsync(
-            new ApplicationUser() {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                UserName = request.Username,
-                Email = request.EmailAddress},
-            request.Password
-        );
-
-        throw new NotImplementedException();
-    }
+    public async Task<TransactionResult<bool>> RegisterUser(RegistrationRequest request, CancellationToken token = default)
+        => await _userManager.CreateAsync(_mapper.Map<ApplicationUser>(request), request.Password);
 }

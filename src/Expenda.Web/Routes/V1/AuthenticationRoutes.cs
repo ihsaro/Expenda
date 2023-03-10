@@ -23,7 +23,7 @@ public sealed class AuthenticationRoutes : IRoute
     private async Task<IResult> Register([FromBody] RegistrationRequest request, [FromServices] IAuthenticationService service, CancellationToken token = default)
     {
         var result = await service.RegisterUser(request, token);
-        return result.Success && result.ResultObject is not null ? Results.Created($"api/v1/authentication/register/{result.ResultObject.Id}", result) : Results.BadRequest(result);
+        return result.Success && result.ResultObject ? Results.Ok() : Results.BadRequest(result);
     }
 
     private async Task<IResult> Login([FromBody] VerifyUserCredentialRequest request, [FromServices] IAuthenticationService service, [FromServices] IApplicationTokenManager tokenManager, [FromServices] HttpContext context, CancellationToken token = default)
