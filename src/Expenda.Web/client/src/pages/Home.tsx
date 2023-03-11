@@ -1,12 +1,10 @@
 import * as React from "react";
 
-import { Button } from "components/framework";
+import { Button } from "~/components/framework";
 
 const Home: React.FC = () => {
-    React.useEffect(() => {
-        
-    }, []);
-    
+    React.useEffect(() => {}, []);
+
     return <Button>Click me sir 1</Button>;
 };
 
