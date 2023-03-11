@@ -21,31 +21,31 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost("login")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login([FromBody] VerifyUserCredentialRequest request, CancellationToken token = default)
     {
         var result = await _authenticationService.VerifyUserCredential(request, token);
 
-        if (result)
+        if (!result) return Unauthorized();
+        
+        var jwt = _tokenManager.GenerateAndGetToken(request.Username);
+
+        HttpContext.Response.Cookies.Append("at", jwt, new CookieOptions()
         {
-            var jwt = _tokenManager.GenerateAndGetToken(request.Username);
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Lax
+        });
 
-            HttpContext.Response.Cookies.Append("at", jwt, new CookieOptions()
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Lax
-            });
+        return Ok();
 
-            return Ok();
-        }
-
-        return Unauthorized();
     }
     
     [HttpPost("register")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register([FromBody] RegistrationRequest request, CancellationToken token = default)
     {
         var result = await _authenticationService.RegisterUser(request, token);
-        return result.Success && result.ResultObject ? Ok() : BadRequest(result);
+        return result is { Success: true, ResultObject: true } ? Ok() : BadRequest(result);
     }
 }

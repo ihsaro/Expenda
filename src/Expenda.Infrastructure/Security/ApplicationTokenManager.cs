@@ -3,8 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
-namespace Expenda.Web.Security;
+namespace Expenda.Infrastructure.Security;
 
 public class ApplicationTokenManager : IApplicationTokenManager
 {

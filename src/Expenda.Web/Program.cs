@@ -1,8 +1,8 @@
-using Expenda.Application.Architecture.Security;
 using Expenda.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Expenda.Web.Middleware;
 using WalkieTalkie.Application;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
@@ -11,13 +11,12 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 });
 
 // Add services to the container.
-builder.Services.AddControllers();
-
 builder.Services
     .RegisterApplicationDependencies()
     .RegisterInfrastructureDependencies(builder.Configuration);
 
-builder.Services.AddTransient<IApplicationTokenManager, IApplicationTokenManager>();
+builder.Services.AddControllers();
+builder.Services.AddAntiforgery();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -28,9 +27,9 @@ builder.Services.AddAuthentication(options =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+        ValidIssuer = builder.Configuration["AccessToken:Issuer"],
+        ValidAudience = builder.Configuration["AccessToken:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AccessToken:Secret"]!)),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = false,
@@ -53,6 +52,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseAntiForgery();
 
 app.MapControllers();
 

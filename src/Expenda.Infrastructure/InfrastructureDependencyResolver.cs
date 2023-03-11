@@ -1,3 +1,4 @@
+using Expenda.Application.Architecture.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Expenda.Domain.Repositories;
 using Expenda.Infrastructure.Persistence;
@@ -5,6 +6,7 @@ using Expenda.Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Expenda.Domain.Entities;
+using Expenda.Infrastructure.Security;
 
 namespace Expenda.Infrastructure;
 
@@ -24,6 +26,10 @@ public static class InfrastructureDependencyResolver
             .AddIdentityCore<ApplicationUser>()
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services
+            .AddTransient<IApplicationUserManager, ApplicationUserManager>()
+            .AddTransient<IApplicationTokenManager, ApplicationTokenManager>();
 
         services
             .AddScoped<IExpenseRepository, ExpenseRepository>()
