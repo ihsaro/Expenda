@@ -1,11 +1,43 @@
 import * as React from "react";
 
-import { Button } from "~/components/framework";
+import {
+    Button,
+    Col,
+    Loader,
+    Row,
+    Tabs,
+    Typography,
+} from "~/components/framework";
+import { Login, Register } from "~/components/home";
 
 const Home: React.FC = () => {
-    React.useEffect(() => {}, []);
+    const { Title } = Typography;
 
-    return <Button>Click me sir 1</Button>;
+    return (
+        <Row justify="space-around" className="mt-60">
+            <Col xs={24} md={6} className="text-center">
+                <Title level={1} className="font-montserrat">
+                    Welcome to Expenda
+                </Title>
+                <Title level={4} className="font-montserrat">
+                    Create & track your expenses
+                </Title>
+                <Title level={5} className="font-montserrat">
+                    Control it with monthly budgets
+                </Title>
+            </Col>
+            <Col xs={24} md={6}>
+                <Tabs
+                    centered
+                    defaultActiveKey="1"
+                    items={[
+                        { key: "1", label: "Login", children: <Login /> },
+                        { key: "2", label: "Register", children: <Register /> },
+                    ]}
+                />
+            </Col>
+        </Row>
+    );
 };
 
 export default Home;

@@ -9,8 +9,7 @@ public class CsrfMiddleware
 
     private static readonly string[] CsrfInclusionUrls =
     {
-        "/login",
-        "/register"
+        "/"
     };
 
     public CsrfMiddleware(IAntiforgery antiforgery, RequestDelegate next)
@@ -25,7 +24,7 @@ public class CsrfMiddleware
 
         if (context.Request.Method.Equals(HttpMethod.Get.Method) && CsrfInclusionUrls.Contains(requestPath))
         {
-            var tokenSet = _antiforgery.GetAndStoreTokens(context);
+            var tokenSet = _antiforgery.GetTokens(context);
 
             context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
                 new CookieOptions { HttpOnly = false });

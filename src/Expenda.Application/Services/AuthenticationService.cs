@@ -21,7 +21,7 @@ internal class AuthenticationService : IAuthenticationService
     public async Task<bool> VerifyUserCredential(VerifyUserCredentialRequest request, CancellationToken token = default)
     {
         var user = await _userManager.FindByUsernameAsync(request.Username);
-        return user == null || !await _userManager.CheckPasswordAsync(user, request.Password);
+        return user != null && await _userManager.CheckPasswordAsync(user, request.Password);
     }
 
     public async Task<TransactionResult<bool>> RegisterUser(RegistrationRequest request, CancellationToken token = default)

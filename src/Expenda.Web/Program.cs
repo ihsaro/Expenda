@@ -16,7 +16,11 @@ builder.Services
     .RegisterInfrastructureDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
-builder.Services.AddAntiforgery();
+builder.Services.AddMvc();
+builder.Services.AddAntiforgery(x =>
+{
+    x.FormFieldName = "XSRF-TOKEN";
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -55,7 +59,9 @@ var app = builder.Build();
 
 app.UseAntiForgery();
 
-app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.UseStaticFiles();
 
