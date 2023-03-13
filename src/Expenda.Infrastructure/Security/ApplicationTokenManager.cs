@@ -18,9 +18,9 @@ public class ApplicationTokenManager : IApplicationTokenManager
 
     public string GenerateAndGetToken(string username)
     {
-        var issuer = _configuration["Jwt:Issuer"];
-        var audience = _configuration["Jwt:Audience"];
-        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!);
+        var issuer = _configuration["AccessToken:Issuer"];
+        var audience = _configuration["AccessToken:Audience"];
+        var key = Encoding.ASCII.GetBytes(_configuration["AccessToken:Secret"]!);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

@@ -2,7 +2,6 @@ using Expenda.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Expenda.Web.Middleware;
 using WalkieTalkie.Application;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
@@ -16,11 +15,6 @@ builder.Services
     .RegisterInfrastructureDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
-builder.Services.AddMvc();
-builder.Services.AddAntiforgery(x =>
-{
-    x.FormFieldName = "XSRF-TOKEN";
-});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -56,8 +50,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-app.UseAntiForgery();
 
 app.MapControllerRoute(
     name: "default",

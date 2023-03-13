@@ -21,7 +21,6 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost("login")]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login([FromBody] VerifyUserCredentialRequest request, CancellationToken token = default)
     {
         var result = await _authenticationService.VerifyUserCredential(request, token);
@@ -42,7 +41,6 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost("register")]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register([FromBody] RegistrationRequest request, CancellationToken token = default)
     {
         var result = await _authenticationService.RegisterUser(request, token);

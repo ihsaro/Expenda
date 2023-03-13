@@ -1,3 +1,4 @@
+import Alert from "~/components/framework/Alert";
 import Button from "~/components/framework/Button";
 import Checkbox from "~/components/framework/Checkbox";
 import Col from "~/components/framework/Col";
@@ -8,6 +9,7 @@ import Tabs from "~/components/framework/Tabs";
 import { Form, Input, Radio, Typography } from "antd";
 
 export {
+    Alert,
     Button,
     Checkbox,
     Col,
