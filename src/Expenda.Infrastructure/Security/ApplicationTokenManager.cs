@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Expenda.Domain.Entities;
 
 namespace Expenda.Infrastructure.Security;
 
@@ -16,7 +17,7 @@ public class ApplicationTokenManager : IApplicationTokenManager
         _configuration = configuration;
     }
 
-    public string GenerateAndGetToken(string username)
+    public string GenerateAndGetToken(ApplicationUser user)
     {
         var issuer = _configuration["AccessToken:Issuer"];
         var audience = _configuration["AccessToken:Audience"];
@@ -27,8 +28,8 @@ public class ApplicationTokenManager : IApplicationTokenManager
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim("Id", Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, username),
-                new Claim(JwtRegisteredClaimNames.Email, username),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
                 new Claim(JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString())
             }),

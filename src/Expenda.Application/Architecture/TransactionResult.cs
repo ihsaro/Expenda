@@ -1,4 +1,5 @@
 using Expenda.Application.Architecture.Extensions;
+using Expenda.Application.Architecture.Localization.Models;
 using System.Text.Json.Serialization;
 
 namespace Expenda.Application.Architecture;
@@ -32,30 +33,24 @@ public class TransactionResult<T>
 
     public TransactionResult(T resultObject) : this() => ResultObject = resultObject;
 
-    public void AddErrorMessage(ErrorMessage message)
+    public TransactionResult<T> AddErrorMessage(ErrorMessage message)
     {
         ErrorMessages.Add(message);
         Success = false;
+        return this;
     }
 
-    public void AddBatchErrorMessages(IEnumerable<ErrorMessage> messages)
+    public TransactionResult<T> AddBatchErrorMessages(IEnumerable<ErrorMessage> messages)
     {
         ErrorMessages.AddRange(messages);
         Success = false;
+        return this;
     }
 }
 
-public class ErrorMessage
+public class ErrorMessage : BaseMessage
 {
-    [JsonPropertyName("code")]
-    public string Code { get; set; }
+    public ErrorMessage(string code, string value) : base(code, value) {}
 
-    [JsonPropertyName("value")]
-    public string Value { get; set; }
-
-    public ErrorMessage(string code, string value)
-    {
-        Code = code;
-        Value = value;
-    }
+    public ErrorMessage(BaseMessage message) : base(message.Code, message.Value) { }
 }

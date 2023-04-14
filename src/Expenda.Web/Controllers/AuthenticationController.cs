@@ -1,6 +1,6 @@
 ﻿using Expenda.Application.Architecture.Security;
-using Expenda.Application.Models;
-using Expenda.Application.Services.Interfaces;
+using Expenda.Application.Features.Authentication.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,25 +11,21 @@ namespace Expenda.Web.Controllers;
 [Route("api/v1/[controller]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
-    private readonly IApplicationTokenManager _tokenManager;
+    private readonly IMediator _mediator;
     
-    public AuthenticationController(IAuthenticationService authenticationService, IApplicationTokenManager tokenManager)
+    public AuthenticationController(IMediator mediator)
     {
-        _authenticationService = authenticationService;
-        _tokenManager = tokenManager;
+        _mediator = mediator;
     }
     
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] VerifyUserCredentialRequest request, CancellationToken token = default)
+    public async Task<IActionResult> Login([FromBody] VerifyUserCommand command, CancellationToken token = default)
     {
-        var result = await _authenticationService.VerifyUserCredential(request, token);
+        var result = await _mediator.Send(command, token);
 
-        if (!result) return Unauthorized();
+        if (!result.Success || result.ResultObject is null) return Unauthorized();
         
-        var jwt = _tokenManager.GenerateAndGetToken(request.Username);
-
-        HttpContext.Response.Cookies.Append("at", jwt, new CookieOptions()
+        HttpContext.Response.Cookies.Append("at", result.ResultObject.AccessToken, new CookieOptions()
         {
             HttpOnly = true,
             Secure = true,
@@ -41,9 +37,9 @@ public class AuthenticationController : ControllerBase
     }
     
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegistrationRequest request, CancellationToken token = default)
+    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken token = default)
     {
-        var result = await _authenticationService.RegisterUser(request, token);
-        return result is { Success: true, ResultObject: true } ? Ok() : BadRequest(result);
+        var result = await _mediator.Send(command, token);
+        return result is { Success: true } ? Ok(result.ResultObject) : BadRequest(result);
     }
 }

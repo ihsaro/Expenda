@@ -1,5 +1,4 @@
-using Expenda.Application.Services;
-using Expenda.Application.Services.Interfaces;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -9,12 +8,9 @@ public static class ApplicationDependencyResolver
 {
     public static IServiceCollection RegisterApplicationDependencies(this IServiceCollection services)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
         services
-            .AddTransient<IAuthenticationService, AuthenticationService>()
-            .AddTransient<IExpenseService, ExpenseService>()
-            .AddTransient<IMonthlyBudgetService, MonthlyBudgetService>();
+            .AddMediatR(Assembly.GetExecutingAssembly())
+            .AddAutoMapper(Assembly.GetExecutingAssembly());
 
         return services;
     }

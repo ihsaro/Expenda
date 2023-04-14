@@ -1,4 +1,6 @@
-using Expenda.Application.Models;
+using Expenda.Application.Features.MonthlyBudget.Commands;
+using Expenda.Application.Features.MonthlyBudget.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenda.Web.Controllers;
@@ -7,15 +9,22 @@ namespace Expenda.Web.Controllers;
 [Route("api/v1/[controller]")]
 public class MonhtlyBudgetController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult ListMonthlyBudgets(CancellationToken token = default)
+    private readonly IMediator _mediator;
+
+    public MonhtlyBudgetController(IMediator mediator)
     {
-        throw new NotImplementedException();
+        _mediator = mediator;
+    }
+
+    [HttpGet]
+    public IActionResult ListMonthlyBudgets(ListMonthlyBudgetsQuery query, CancellationToken token = default)
+    {
+        return Ok(_mediator.Send(query, token));
     }
 
     [HttpPost]
     [HttpPut]
-    public IActionResult SetMonthlyBudget(CancellationToken token = default)
+    public IActionResult SetMonthlyBudget(SetMonthlyBudgetCommand command, CancellationToken token = default)
     {
         throw new NotImplementedException();
     }

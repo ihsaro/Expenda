@@ -1,6 +1,8 @@
-﻿namespace Expenda.Application.Architecture.Security;
+﻿using Expenda.Domain.Entities;
+
+namespace Expenda.Application.Architecture.Security;
 
 public interface IApplicationTokenManager
 {
-    string GenerateAndGetToken(string username);
+    string GenerateAndGetToken(ApplicationUser user);
 }

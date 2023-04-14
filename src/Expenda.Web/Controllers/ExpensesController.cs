@@ -1,4 +1,5 @@
-﻿using Expenda.Application.Models;
+﻿using Expenda.Application.Features.Expenses.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenda.Web.Controllers;
@@ -7,6 +8,13 @@ namespace Expenda.Web.Controllers;
 [Route("api/v1/[controller]")]
 public class ExpensesController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public ExpensesController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     [HttpGet]
     public Task<IActionResult> GetExpenses(CancellationToken token = default)
     {
@@ -14,7 +22,7 @@ public class ExpensesController : ControllerBase
     }
 
     [HttpPost]
-    public Task<IActionResult> CreateExpense([FromBody] UpsertExpenseRequest request, CancellationToken token = default)
+    public Task<IActionResult> CreateExpense([FromBody] CreateExpenseCommand command, CancellationToken token = default)
     {
         throw new NotImplementedException();
     }
@@ -26,7 +34,7 @@ public class ExpensesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public Task<IActionResult> UpdateExpense([FromRoute] int id, [FromBody] UpsertExpenseRequest request, CancellationToken token = default)
+    public Task<IActionResult> UpdateExpense([FromRoute] int id, [FromBody] UpdateExpenseCommand command, CancellationToken token = default)
     {
         throw new NotImplementedException();
     }

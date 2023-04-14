@@ -1,7 +1,9 @@
+using Expenda.Application.Architecture.Security;
 using Expenda.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WalkieTalkie.API.Security;
 using WalkieTalkie.Application;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
@@ -10,6 +12,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 });
 
 // Add services to the container.
+builder.Services.AddScoped<IApplicationSessionManager, ApplicationSessionManager>();
+
 builder.Services
     .RegisterApplicationDependencies()
     .RegisterInfrastructureDependencies(builder.Configuration);

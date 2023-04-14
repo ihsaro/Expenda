@@ -32,5 +32,9 @@ internal class ApplicationUserManager : IApplicationUserManager
 
     public async Task<ApplicationUser?> FindByUsernameAsync(string username) => await _userManager.FindByNameAsync(username);
 
+    public async Task<ApplicationUser?> FindByIdAsync(int id) => await _userManager.FindByIdAsync(id.ToString());
+
     public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password) => await _userManager.CheckPasswordAsync(user, password);
+
+    public async Task<bool> DoesUserExist(string username, string email) => await _userManager.FindByNameAsync(username) is not null && await _userManager.FindByEmailAsync(email) is not null;
 }
