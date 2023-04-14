@@ -2,7 +2,7 @@
 
 namespace Expenda.Application.Models;
 
-public class NewExpenseRequest : IValidatableObject
+public class UpsertExpenseRequest : IValidatableObject
 {
     [Required]
     [MinLength(1)]
