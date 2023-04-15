@@ -1,13 +1,6 @@
 import * as React from "react";
 
-import {
-    Button,
-    Col,
-    Loader,
-    Row,
-    Tabs,
-    Typography,
-} from "~/components/framework";
+import { Col, Row, Tabs, Typography } from "antd";
 import { Login, Register } from "~/components/home";
 
 const Home: React.FC = () => {

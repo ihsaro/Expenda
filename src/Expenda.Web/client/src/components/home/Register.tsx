@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Button, Form, Input } from "~/components/framework";
+import { Button, Form, Input } from "antd";
 
 const Register: React.FC = () => {
     const [form] = Form.useForm();

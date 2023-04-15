@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Expenda.Domain.Entities;
 using Expenda.Infrastructure.Security;
+using Expenda.Application.Architecture.Localization;
+using Expenda.Infrastructure.Localization;
 
 namespace Expenda.Infrastructure;
 
@@ -21,6 +23,10 @@ public static class InfrastructureDependencyResolver
                 x.MigrationsAssembly("Expenda.Infrastructure");
             });
         });
+
+        services.AddLocalization();
+
+        services.AddTransient<IAuthenticationMessenger, AuthenticationMessenger>();
 
         services
             .AddIdentityCore<ApplicationUser>()

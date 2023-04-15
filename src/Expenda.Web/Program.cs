@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 });
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IApplicationSessionManager, ApplicationSessionManager>();
 
 builder.Services
@@ -68,7 +70,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

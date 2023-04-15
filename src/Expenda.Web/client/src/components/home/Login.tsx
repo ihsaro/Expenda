@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Alert, Button, Checkbox, Form, Input } from "~/components/framework";
+import { Alert, Button, Checkbox, Form, Input } from "antd";
 
 type FormFields = {
     username: string;
@@ -29,11 +29,9 @@ const Login: React.FC = () => {
 
         if (response.status === 200) {
             window.location.reload();
-        }
-        else if (response.status === 401) {
+        } else if (response.status === 401) {
             setErrors(["Invalid credentials"]);
-        }
-        else {
+        } else {
             setErrors(["Unknown error, please try again!"]);
         }
     };
@@ -88,7 +86,7 @@ const Login: React.FC = () => {
                         closable
                         message={error}
                         className="fixed bottom-0 right-0 m-5"
-                        onClose={e => setErrors([])}
+                        onClose={(e) => setErrors([])}
                     />
                 );
             })}
