@@ -1,70 +1,70 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using AutoMapper;
+
 using Expenda.Application.Architecture;
-using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Entities;
+using Expenda.Domain.Repositories;
+
 using MediatR;
+
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Expenda.Application.Features.Expenses.Commands;
 
 public class CreateExpenseCommand : IRequest<TransactionResult<CreateExpenseCommandResponse>>
 {
     [Required]
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
+    [MinLength(1)]
+    [MaxLength(250)]
+    public required string Name { get; set; }
+    
+    [MaxLength(1000)]
+    public string? Description { get; set; }
+    
+    [Required]
+    public double Price { get; set; }
+    
+    [Required]
+    public int Quantity { get; set; }
 
     [Required]
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [Required]
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [Required]
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-
-    [Required]
-    [JsonPropertyName("password")]
-    public required string Password { get; set; }
+    public DateOnly TransactionDate { get; set; }
 }
 
-public class CreateExpenseCommandResponse
+public class CreateExpenseCommandResponse : CreateExpenseCommand
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
 }
 
 public class CreateExpenseCommandHandler : IRequestHandler<CreateExpenseCommand, TransactionResult<CreateExpenseCommandResponse>>
 {
+    private readonly IExpenseRepository _repository;
     private readonly IMapper _mapper;
-    private readonly IApplicationUserManager _userManager;
-    private readonly IAuthenticationMessenger _messenger;
+    private readonly IApplicationSessionManager _sessionManager;
 
-    public CreateExpenseCommandHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
+    public CreateExpenseCommandHandler(IExpenseRepository repository, IMapper mapper, IApplicationSessionManager sessionManager)
     {
+        _repository = repository;
         _mapper = mapper;
-        _userManager = userManager;
-        _messenger = messenger;
+        _sessionManager = sessionManager;
     }
 
-    public Task<TransactionResult<CreateExpenseCommandResponse>> Handle(CreateExpenseCommand request, CancellationToken cancellationToken)
+    public async Task<TransactionResult<CreateExpenseCommandResponse>> Handle(CreateExpenseCommand command, CancellationToken token)
     {
-        throw new NotImplementedException();
+        var entity = _mapper.Map<Expense>(command);
+        _repository.Create(entity);
+        await _repository.Commit(token);
+        return new TransactionResult<CreateExpenseCommandResponse>(_mapper.Map<CreateExpenseCommandResponse>(entity));
+    }
+}
+
+public class CreateExpenseCommandProfile : Profile
+{
+    public CreateExpenseCommandProfile()
+    {
+        CreateMap<CreateExpenseCommand, Expense>();
+        CreateMap<Expense, CreateExpenseCommandResponse>();
     }
 }
