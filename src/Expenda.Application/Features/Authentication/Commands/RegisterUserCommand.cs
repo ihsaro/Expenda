@@ -80,3 +80,17 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
             new TransactionResult<RegisterUserCommandResponse>().AddBatchErrorMessages(result.ErrorMessages);
     }
 }
+
+public class RegisterUserCommandProfile : Profile
+{
+    public RegisterUserCommandProfile()
+    {
+        CreateMap<RegisterUserCommand, ApplicationUser>()
+            .ForMember(x => x.Email, opt => opt.MapFrom(x => x.EmailAddress))
+            .ForMember(x => x.UserName, opt => opt.MapFrom(x => x.Username));
+
+        CreateMap<ApplicationUser, RegisterUserCommandResponse>()
+            .ForMember(x => x.EmailAddress, opt => opt.MapFrom(x => x.Email))
+            .ForMember(x => x.Username, opt => opt.MapFrom(x => x.UserName));
+    }
+}
