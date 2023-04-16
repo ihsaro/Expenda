@@ -43,4 +43,32 @@ public class ApplicationTokenManager : IApplicationTokenManager
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
+    public bool IsTokenValid(string token)
+    {
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidIssuer = _configuration["AccessToken:Issuer"],
+                ValidAudience = _configuration["AccessToken:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AccessToken:Secret"]!)),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                RequireExpirationTime = true,
+                ClockSkew = TimeSpan.Zero
+            }, out var validatedToken);
+
+            var jwtToken = validatedToken as JwtSecurityToken;
+            return jwtToken != null && jwtToken.ValidTo >= DateTime.UtcNow ? true : false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

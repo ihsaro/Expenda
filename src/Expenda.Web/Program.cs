@@ -1,5 +1,6 @@
 using Expenda.Application.Architecture.Security;
 using Expenda.Infrastructure;
+using Expenda.Web.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -37,7 +38,9 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = false,
-        ValidateIssuerSigningKey = true
+        ValidateIssuerSigningKey = true,
+        RequireExpirationTime = true,
+        ClockSkew = TimeSpan.Zero
     };
     o.Events = new JwtBearerEvents
     {
@@ -74,6 +77,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRouteProtection();
 
 app.MapFallbackToFile("index.html");
 app.Run();
