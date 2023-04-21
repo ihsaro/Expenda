@@ -4,53 +4,18 @@ using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
-using Expenda.Domain.Entities;
+using Expenda.Application.Features.Expenses.Models.Response;
 using MediatR;
 
 namespace Expenda.Application.Features.Expenses.Queries;
 
-public class GetExpenseQuery : IRequest<TransactionResult<GetExpenseQueryResponse>>
-{
-    [Required]
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [Required]
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [Required]
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [Required]
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-
-    [Required]
-    [JsonPropertyName("password")]
-    public required string Password { get; set; }
-}
-
-public class GetExpenseQueryResponse
+public class GetExpenseQuery : IRequest<TransactionResult<ExpenseResponse>>
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
+    public required int Id { get; set; }
 }
 
-public class GetExpenseQueryHandler : IRequestHandler<GetExpenseQuery, TransactionResult<GetExpenseQueryResponse>>
+public class GetExpenseQueryHandler : IRequestHandler<GetExpenseQuery, TransactionResult<ExpenseResponse>>
 {
     private readonly IMapper _mapper;
     private readonly IApplicationUserManager _userManager;
@@ -63,7 +28,7 @@ public class GetExpenseQueryHandler : IRequestHandler<GetExpenseQuery, Transacti
         _messenger = messenger;
     }
 
-    public Task<TransactionResult<GetExpenseQueryResponse>> Handle(GetExpenseQuery request, CancellationToken cancellationToken)
+    public Task<TransactionResult<ExpenseResponse>> Handle(GetExpenseQuery request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

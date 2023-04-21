@@ -1,70 +1,30 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Expenda.Application.Architecture;
-using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
-using Expenda.Domain.Entities;
+using Expenda.Application.Features.Expenses.Models.Response;
+using Expenda.Domain.Repositories;
 using MediatR;
 
 namespace Expenda.Application.Features.Expenses.Queries;
 
-public class GetExpensesQuery : IRequest<TransactionResult<GetExpensesQueryResponse>>
-{
-    [Required]
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
+public class GetExpensesQuery : IRequest<TransactionResult<IEnumerable<ExpenseResponse>>> {}
 
-    [Required]
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [Required]
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [Required]
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-
-    [Required]
-    [JsonPropertyName("password")]
-    public required string Password { get; set; }
-}
-
-public class GetExpensesQueryResponse
-{
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-}
-
-public class GetExpensesQueryHandler : IRequestHandler<GetExpensesQuery, TransactionResult<GetExpensesQueryResponse>>
+public class GetExpensesQueryHandler : IRequestHandler<GetExpensesQuery, TransactionResult<IEnumerable<ExpenseResponse>>>
 {
     private readonly IMapper _mapper;
-    private readonly IApplicationUserManager _userManager;
-    private readonly IAuthenticationMessenger _messenger;
+    private readonly IApplicationSessionManager _sessionManager;
+    private readonly IExpenseRepository _repository;
 
-    public GetExpensesQueryHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
+    public GetExpensesQueryHandler(IMapper mapper, IApplicationSessionManager sessionManager, IExpenseRepository repository)
     {
         _mapper = mapper;
-        _userManager = userManager;
-        _messenger = messenger;
+        _sessionManager = sessionManager;
+        _repository = repository;
     }
 
-    public Task<TransactionResult<GetExpensesQueryResponse>> Handle(GetExpensesQuery request, CancellationToken cancellationToken)
+    public async Task<TransactionResult<IEnumerable<ExpenseResponse>>> Handle(GetExpensesQuery request, CancellationToken token)
     {
-        throw new NotImplementedException();
+        var entities = await _repository.GetAllExpensesForUser(_sessionManager.CurrentUser.Id, token);
+        return new TransactionResult<IEnumerable<ExpenseResponse>>(_mapper.Map<IEnumerable<ExpenseResponse>>(entities));
     }
 }

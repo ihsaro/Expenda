@@ -1,56 +1,17 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
-using Expenda.Domain.Entities;
 using MediatR;
 
 namespace Expenda.Application.Features.Expenses.Commands;
 
-public class DeleteExpensesCommand : IRequest<TransactionResult<DeleteExpensesCommandResponse>>
+public class DeleteExpensesCommand : IRequest<TransactionResult<bool>>
 {
-    [Required]
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [Required]
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [Required]
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [Required]
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-
-    [Required]
-    [JsonPropertyName("password")]
-    public required string Password { get; set; }
+    public required IEnumerable<int> ids { get; set; }
 }
 
-public class DeleteExpensesCommandResponse
-{
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-}
-
-public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesCommand, TransactionResult<DeleteExpensesCommandResponse>>
+public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesCommand, TransactionResult<bool>>
 {
     private readonly IMapper _mapper;
     private readonly IApplicationUserManager _userManager;
@@ -63,7 +24,7 @@ public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesComman
         _messenger = messenger;
     }
 
-    public Task<TransactionResult<DeleteExpensesCommandResponse>> Handle(DeleteExpensesCommand request, CancellationToken cancellationToken)
+    public Task<TransactionResult<bool>> Handle(DeleteExpensesCommand request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

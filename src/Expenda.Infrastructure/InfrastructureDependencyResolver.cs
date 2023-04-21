@@ -26,7 +26,9 @@ public static class InfrastructureDependencyResolver
 
         services.AddLocalization();
 
-        services.AddTransient<IAuthenticationMessenger, AuthenticationMessenger>();
+        services
+            .AddTransient<IAuthenticationMessenger, AuthenticationMessenger>()
+            .AddTransient<IExpenseMessenger, ExpenseMessenger>();
 
         services
             .AddIdentityCore<ApplicationUser>()

@@ -1,47 +1,43 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
-using Expenda.Domain.Entities;
 using Expenda.Domain.Repositories;
 using MediatR;
 
 namespace Expenda.Application.Features.Expenses.Commands;
 
-public class DeleteExpenseCommand : IRequest<TransactionResult<DeleteExpenseCommandResponse>>
+public class DeleteExpenseCommand : IRequest<TransactionResult<bool>>
 {
-    public required IEnumerable<int> ids { get; set; }
+    public required int Id { get; set; }
 }
 
-public class DeleteExpenseCommandResponse
-{
-    
-}
-
-public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand, TransactionResult<DeleteExpenseCommandResponse>>
+public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand, TransactionResult<bool>>
 {
     private readonly IExpenseRepository _repository;
+    private readonly IApplicationSessionManager _sessionManager;
+    private readonly IExpenseMessenger _messenger;
 
-    public DeleteExpenseCommandHandler(IExpenseRepository repository)
+    public DeleteExpenseCommandHandler(IExpenseRepository repository, IApplicationSessionManager sessionManager, IExpenseMessenger messenger)
     {
         _repository = repository;
+        _sessionManager = sessionManager;
+        _messenger = messenger;
     }
 
-    public async Task<TransactionResult<DeleteExpenseCommandResponse>> Handle(DeleteExpenseCommand command, CancellationToken token)
+    public async Task<TransactionResult<bool>> Handle(DeleteExpenseCommand command, CancellationToken token)
     {
-        foreach (var id in command.ids)
+        var entity = await _repository.GetById(command.Id, token);
+
+        if (entity is null || entity.Owner.Id != _sessionManager.CurrentUser.Id)
         {
-            await _repository.Delete(id, token);
+            return new TransactionResult<bool>(false)
+                .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
         }
 
-        var x = await _repository.Commit(token);
+        _repository.Delete(entity, token);
+        
+        var operation = await _repository.Commit(token);
 
-        if (x != command.ids.Count())
-        {
-            // To be handled
-        }
-        return new TransactionResult<DeleteExpenseCommandResponse>();
+        return new TransactionResult<bool>(operation == 1);
     }
 }

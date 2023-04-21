@@ -14,13 +14,13 @@ public class Expense : BaseEntity
     public string? Description { get; set; }
     
     [Required]
-    public double Price { get; set; }
+    public required double Price { get; set; }
     
     [Required]
-    public int Quantity { get; set; }
+    public required int Quantity { get; set; }
 
     [Required]
-    public DateOnly TransactionDate { get; set; }
+    public required DateOnly TransactionDate { get; set; }
     
     [Required]
     [ForeignKey(nameof(ApplicationUser))]

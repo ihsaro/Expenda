@@ -1,5 +1,5 @@
 namespace Expenda.Application.Architecture.Localization;
 
-public interface IAuthenticationMessenger : IMessengerBase
+public interface IExpenseMessenger : IMessengerBase
 {
 }

@@ -13,6 +13,13 @@
     <ProjectReference Include="..\Expenda.Application\Expenda.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\ExpenseMessenger.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExpenseMessenger.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
