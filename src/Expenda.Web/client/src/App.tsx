@@ -1,12 +1,14 @@
 import { ConfigProvider, theme } from "antd";
 import * as React from "react";
-import Home from "~/pages/Home";
-import AppHome from "~/pages/app/Home";
+import { Home, NotFound } from "~/pages";
+import { Dashboard, Expenses, MonthlyBudgets, Settings } from "~/pages/app";
 import { ThemeContext } from "~/contexts/ThemeContext";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { SidebarContext } from "~/contexts/SidebarContext";
 
 const App: React.FC = () => {
     const [darkMode, setDarkMode] = React.useState(false);
+    const [sidebarExpanded, setSidebarExpanded] = React.useState(false);
 
     const { defaultAlgorithm, darkAlgorithm } = theme;
 
@@ -16,9 +18,29 @@ const App: React.FC = () => {
             element: <Home />,
         },
         {
-            path: "/app",
-            element: <AppHome />,
+            path: "/app/dashboard",
+            element: <Dashboard />,
         },
+        {
+            path: "/app/expenses",
+            element: <Expenses />,
+        },
+        {
+            path: "/app/monthly-budgets",
+            element: <MonthlyBudgets />,
+        },
+        {
+            path: "/app/settings",
+            element: <Settings />,
+        },
+        {
+            path: "/app",
+            element: <Navigate to="/app/dashboard" />
+        },
+        {
+            path: "*",
+            element: <NotFound />
+        }
     ]);
 
     React.useEffect(() => {
@@ -33,6 +55,18 @@ const App: React.FC = () => {
         }
     }, []);
 
+    React.useEffect(() => {
+        const isExpanded = localStorage.getItem("expanded");
+
+        if (
+            isExpanded !== undefined &&
+            isExpanded !== null &&
+            (isExpanded === "true" || isExpanded === "false")
+        ) {
+            setSidebarExpanded(JSON.parse(isExpanded));
+        }
+    }, []);
+
     return (
         <ConfigProvider
             theme={{
@@ -44,14 +78,21 @@ const App: React.FC = () => {
                 components: {},
             }}
         >
-            <ThemeContext.Provider
+            <SidebarContext.Provider
                 value={{
-                    darkMode: darkMode,
-                    setDarkMode: setDarkMode,
+                    expanded: sidebarExpanded,
+                    setExpanded: setSidebarExpanded,
                 }}
             >
-                <RouterProvider router={router} />
-            </ThemeContext.Provider>
+                <ThemeContext.Provider
+                    value={{
+                        darkMode: darkMode,
+                        setDarkMode: setDarkMode,
+                    }}
+                >
+                    <RouterProvider router={router} />
+                </ThemeContext.Provider>
+            </SidebarContext.Provider>
         </ConfigProvider>
     );
 };

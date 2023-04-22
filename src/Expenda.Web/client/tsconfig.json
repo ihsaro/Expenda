@@ -4,6 +4,7 @@
         "paths": {
             "~/components/*": ["components/*"],
             "~/contexts/*": ["contexts/*"],
+            "~/pages": ["pages"],
             "~/pages/*": ["pages/*"],
             "~/utilities/*": ["utilities/*"]
         },
