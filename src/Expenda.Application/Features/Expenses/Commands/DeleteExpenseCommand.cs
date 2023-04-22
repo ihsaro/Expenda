@@ -14,13 +14,13 @@ public class DeleteExpenseCommand : IRequest<TransactionResult<bool>>
 public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand, TransactionResult<bool>>
 {
     private readonly IExpenseRepository _repository;
-    private readonly IApplicationSessionManager _sessionManager;
+    private readonly IApplicationSessionManager _session;
     private readonly IExpenseMessenger _messenger;
 
-    public DeleteExpenseCommandHandler(IExpenseRepository repository, IApplicationSessionManager sessionManager, IExpenseMessenger messenger)
+    public DeleteExpenseCommandHandler(IExpenseRepository repository, IApplicationSessionManager session, IExpenseMessenger messenger)
     {
         _repository = repository;
-        _sessionManager = sessionManager;
+        _session = session;
         _messenger = messenger;
     }
 
@@ -28,7 +28,7 @@ public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand,
     {
         var entity = await _repository.GetById(command.Id, token);
 
-        if (entity is null || entity.Owner.Id != _sessionManager.CurrentUser.Id)
+        if (entity is null || entity.Owner.Id != _session.CurrentUser.Id)
         {
             return new TransactionResult<bool>(false)
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));

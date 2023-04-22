@@ -37,9 +37,11 @@ public class ExpensesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public Task<IActionResult> UpdateExpense([FromRoute] int id, [FromBody] UpdateExpenseCommand command, CancellationToken token = default)
+    public async Task<IActionResult> UpdateExpense([FromRoute] int id, [FromBody] UpdateExpenseCommand command, CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        command.Id = id;
+        var result = await _mediator.Send(command, token);
+        return result.Success && result.ResultObject is not null ? Ok(result.ResultObject) : NotFound(result.ErrorMessages);
     }
 
     [HttpDelete("{id}")]

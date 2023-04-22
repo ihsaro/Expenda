@@ -30,6 +30,11 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _table.Remove(entity);
     }
 
+    public void Update(T entity, CancellationToken token = default)
+    {
+        _context.Update(entity);
+    }
+
     public async Task<T?> GetById(int id, CancellationToken token = default)
     {
         return await _table.FirstOrDefaultAsync(x => x.Id == id);

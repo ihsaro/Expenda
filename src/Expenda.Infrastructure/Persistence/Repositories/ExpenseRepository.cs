@@ -7,11 +7,8 @@ namespace Expenda.Infrastructure.Persistence.Repositories;
 
 internal class ExpenseRepository : GenericRepository<Expense>, IExpenseRepository
 {
-    private readonly IApplicationSessionManager _sessionManager;
-    
-    public ExpenseRepository(IApplicationSessionManager sessionManager, ApplicationDbContext context) : base(context)
+    public ExpenseRepository(ApplicationDbContext context) : base(context)
     {
-        _sessionManager = sessionManager;
     }
 
     public async Task<IEnumerable<Expense>> GetAllExpensesForUser(int userId, CancellationToken token = default)

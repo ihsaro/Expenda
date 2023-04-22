@@ -1,69 +1,36 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using Expenda.Application.Architecture;
-using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
-using Expenda.Domain.Entities;
+using Expenda.Application.Features.Expenses.Models.Response;
 using MediatR;
 
 namespace Expenda.Application.Features.MonthlyBudget.Commands;
 
-public class SetMonthlyBudgetCommand : IRequest<TransactionResult<SetMonthlyBudgetCommandResponse>>
+public class SetMonthlyBudgetCommand : IRequest<TransactionResult<MonthlyBudgetResponse>>
 {
-    [Required]
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [Required]
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [Required]
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [Required]
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-
-    [Required]
-    [JsonPropertyName("password")]
-    public required string Password { get; set; }
+    [JsonPropertyName("month")]
+    public required int Month { get; set; }
+    
+    [JsonPropertyName("year")]
+    public required int Year { get; set; }
+    
+    [JsonPropertyName("budget")]
+    public required int Budget { get; set; }
 }
 
-public class SetMonthlyBudgetCommandResponse
-{
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
-
-    [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
-
-    [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
-
-    [JsonPropertyName("username")]
-    public required string Username { get; set; }
-}
-
-public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCommand, TransactionResult<SetMonthlyBudgetCommandResponse>>
+public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCommand, TransactionResult<MonthlyBudgetResponse>>
 {
     private readonly IMapper _mapper;
-    private readonly IApplicationUserManager _userManager;
-    private readonly IAuthenticationMessenger _messenger;
+    private readonly IApplicationSessionManager _session;
 
-    public SetMonthlyBudgetCommandHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
+    public SetMonthlyBudgetCommandHandler(IMapper mapper, IApplicationSessionManager session)
     {
         _mapper = mapper;
-        _userManager = userManager;
-        _messenger = messenger;
+        _session = session;
     }
 
-    public Task<TransactionResult<SetMonthlyBudgetCommandResponse>> Handle(SetMonthlyBudgetCommand request, CancellationToken cancellationToken)
+    public Task<TransactionResult<MonthlyBudgetResponse>> Handle(SetMonthlyBudgetCommand command, CancellationToken token)
     {
         throw new NotImplementedException();
     }
