@@ -12,17 +12,17 @@ public class VerifyUserCommand : IRequest<TransactionResult<VerifyUserCommandRes
 {
     [Required]
     [JsonPropertyName("username")]
-    public required string Username { get; set; }
+    public string Username { get; set; } = null!;
 
     [Required]
     [JsonPropertyName("password")]
-    public required string Password { get; set; }
+    public string Password { get; set; } = null!;
 }
 
 public class VerifyUserCommandResponse
 {
     [JsonPropertyName("access_token")]
-    public required string AccessToken { get; set; }
+    public string AccessToken { get; set; } = null!;
 }
 
 public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, TransactionResult<VerifyUserCommandResponse>>

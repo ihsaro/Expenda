@@ -10,11 +10,8 @@ const MonthlyBudgets: React.FC = () => {
         <Layout className="fixed top-0 left-0 h-screen w-full">
             <Sidebar currentFeature={Feature.MONTHLY_BUDGETS} />
             <Layout>
-                <Header className="h-max bg-inherit">
-                </Header>
-                <Content className="pl-12 pt-5 pr-12">
-                    
-                </Content>
+                <Header className="h-max bg-inherit"></Header>
+                <Content className="pl-12 pt-5 pr-12"></Content>
             </Layout>
         </Layout>
     );

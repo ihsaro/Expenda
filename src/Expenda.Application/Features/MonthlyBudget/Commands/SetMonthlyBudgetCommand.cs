@@ -10,13 +10,13 @@ namespace Expenda.Application.Features.MonthlyBudget.Commands;
 public class SetMonthlyBudgetCommand : IRequest<TransactionResult<MonthlyBudgetResponse>>
 {
     [JsonPropertyName("month")]
-    public required int Month { get; set; }
+    public int Month { get; set; }
     
     [JsonPropertyName("year")]
-    public required int Year { get; set; }
+    public int Year { get; set; }
     
     [JsonPropertyName("budget")]
-    public required int Budget { get; set; }
+    public int Budget { get; set; }
 }
 
 public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCommand, TransactionResult<MonthlyBudgetResponse>>

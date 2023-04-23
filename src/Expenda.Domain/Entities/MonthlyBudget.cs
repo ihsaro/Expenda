@@ -18,5 +18,5 @@ public class MonthlyBudget : BaseEntity
 
     [Required]
     [ForeignKey(nameof(ApplicationUser))]
-    public required ApplicationUser Owner { get; set; }
+    public ApplicationUser Owner { get; set; } = null!;
 }

@@ -3,7 +3,11 @@ import * as React from "react";
 import { Home, NotFound } from "~/pages";
 import { Dashboard, Expenses, MonthlyBudgets, Settings } from "~/pages/app";
 import { ThemeContext } from "~/contexts/ThemeContext";
-import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+    Navigate,
+    RouterProvider,
+    createBrowserRouter,
+} from "react-router-dom";
 import { SidebarContext } from "~/contexts/SidebarContext";
 
 const App: React.FC = () => {
@@ -35,12 +39,12 @@ const App: React.FC = () => {
         },
         {
             path: "/app",
-            element: <Navigate to="/app/dashboard" />
+            element: <Navigate to="/app/dashboard" />,
         },
         {
             path: "*",
-            element: <NotFound />
-        }
+            element: <NotFound />,
+        },
     ]);
 
     React.useEffect(() => {

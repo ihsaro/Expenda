@@ -9,7 +9,7 @@ const { Text } = Typography;
 
 const Settings: React.FC = () => {
     const { darkMode, setDarkMode } = useThemeContext();
-    
+
     return (
         <Layout className="fixed top-0 left-0 h-screen w-full">
             <Sidebar currentFeature={Feature.SETTINGS} />

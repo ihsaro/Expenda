@@ -8,21 +8,21 @@ public class Expense : BaseEntity
     [Required]
     [MinLength(1)]
     [MaxLength(250)]
-    public required string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     [MaxLength(1000)]
     public string? Description { get; set; }
     
     [Required]
-    public required double Price { get; set; }
+    public double Price { get; set; }
     
     [Required]
-    public required int Quantity { get; set; }
+    public int Quantity { get; set; }
 
     [Required]
-    public required DateOnly TransactionDate { get; set; }
+    public DateOnly TransactionDate { get; set; }
     
     [Required]
     [ForeignKey(nameof(ApplicationUser))]
-    public required ApplicationUser Owner { get; set; }
+    public ApplicationUser Owner { get; set; } = null!;
 }

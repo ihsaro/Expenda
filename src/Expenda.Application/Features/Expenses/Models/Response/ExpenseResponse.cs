@@ -5,20 +5,20 @@ namespace Expenda.Application.Features.Expenses.Models.Response;
 public class ExpenseResponse
 {
     [JsonPropertyName("id")]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     [JsonPropertyName("description")]
     public string? Description { get; set; }
     
     [JsonPropertyName("price")]
-    public required double Price { get; set; }
+    public double Price { get; set; }
     
     [JsonPropertyName("quantity")]
-    public required int Quantity { get; set; }
+    public int Quantity { get; set; }
 
     [JsonPropertyName("transaction_date")]
-    public required DateOnly TransactionDate { get; set; }
+    public DateOnly TransactionDate { get; set; }
 }

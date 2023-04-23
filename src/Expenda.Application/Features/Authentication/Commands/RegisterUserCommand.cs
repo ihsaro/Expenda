@@ -13,23 +13,23 @@ public class RegisterUserCommand : IRequest<TransactionResult<RegisterUserComman
 {
     [Required]
     [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
     [Required]
     [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 
     [Required]
     [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
+    public string EmailAddress { get; set; } = null!;
 
     [Required]
     [JsonPropertyName("username")]
-    public required string Username { get; set; }
+    public string Username { get; set; } = null!;
 
     [Required]
     [JsonPropertyName("password")]
-    public required string Password { get; set; }
+    public string Password { get; set; } = null!;
 }
 
 public class RegisterUserCommandResponse
@@ -38,16 +38,16 @@ public class RegisterUserCommandResponse
     public int Id { get; set; }
 
     [JsonPropertyName("first_name")]
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
     [JsonPropertyName("last_name")]
-    public required string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 
     [JsonPropertyName("email_address")]
-    public required string EmailAddress { get; set; }
+    public string EmailAddress { get; set; } = null!;
 
     [JsonPropertyName("username")]
-    public required string Username { get; set; }
+    public string Username { get; set; } = null!;
 }
 
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, TransactionResult<RegisterUserCommandResponse>>

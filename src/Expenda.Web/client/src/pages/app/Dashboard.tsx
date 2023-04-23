@@ -14,9 +14,7 @@ const Dashboard: React.FC = () => {
                 <Header className="h-max bg-inherit">
                     <UserDataMetrics />
                 </Header>
-                <Content className="pl-12 pt-5 pr-12">
-                    
-                </Content>
+                <Content className="pl-12 pt-5 pr-12"></Content>
             </Layout>
         </Layout>
     );

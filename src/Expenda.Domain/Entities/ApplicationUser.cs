@@ -9,10 +9,10 @@ public class ApplicationUser : IdentityUser<int>
     [Required]
     [MinLength(10)]
     [MaxLength(250)]
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
     [Required]
     [MinLength(10)]
     [MaxLength(250)]
-    public required string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 }

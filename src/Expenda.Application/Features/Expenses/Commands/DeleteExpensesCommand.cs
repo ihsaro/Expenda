@@ -8,7 +8,7 @@ namespace Expenda.Application.Features.Expenses.Commands;
 
 public class DeleteExpensesCommand : IRequest<TransactionResult<bool>>
 {
-    public required IEnumerable<int> ids { get; set; }
+    public IEnumerable<int> ids { get; set; } = null!;
 }
 
 public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesCommand, TransactionResult<bool>>

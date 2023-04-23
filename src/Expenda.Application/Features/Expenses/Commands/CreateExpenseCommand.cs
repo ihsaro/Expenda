@@ -19,7 +19,7 @@ public class CreateExpenseCommand : IRequest<TransactionResult<ExpenseResponse>>
     [MinLength(1)]
     [MaxLength(250)]
     [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     [MaxLength(1000)]
     [JsonPropertyName("description")]

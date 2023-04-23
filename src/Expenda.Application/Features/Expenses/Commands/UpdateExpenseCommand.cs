@@ -12,7 +12,7 @@ namespace Expenda.Application.Features.Expenses.Commands;
 public class UpdateExpenseCommand : CreateExpenseCommand
 {
     [JsonPropertyName("id")]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 }
 
 public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand, TransactionResult<ExpenseResponse>>

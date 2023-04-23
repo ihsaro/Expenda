@@ -12,7 +12,7 @@ namespace Expenda.Application.Features.Expenses.Queries;
 public class GetExpenseQuery : IRequest<TransactionResult<ExpenseResponse>>
 {
     [JsonPropertyName("id")]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 }
 
 public class GetExpenseQueryHandler : IRequestHandler<GetExpenseQuery, TransactionResult<ExpenseResponse>>
