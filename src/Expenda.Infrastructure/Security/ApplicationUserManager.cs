@@ -22,12 +22,10 @@ internal class ApplicationUserManager : IApplicationUserManager
         {
             return new TransactionResult<bool>(true);
         }
-        else
-        {
-            var transaction = new TransactionResult<bool>(false);
-            result.Errors.ToList().ForEach(error => transaction.AddErrorMessage(new ErrorMessage(error.Code, error.Description)));
-            return transaction;
-        }
+
+        var transaction = new TransactionResult<bool>(false);
+        result.Errors.ToList().ForEach(error => transaction.AddErrorMessage(new ErrorMessage(error.Code, error.Description)));
+        return transaction;
     }
 
     public async Task<ApplicationUser?> FindByUsernameAsync(string username) => await _userManager.FindByNameAsync(username);

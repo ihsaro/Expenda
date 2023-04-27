@@ -1,4 +1,3 @@
-using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Entities;
 using Expenda.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +12,6 @@ internal class ExpenseRepository : GenericRepository<Expense>, IExpenseRepositor
 
     public async Task<IEnumerable<Expense>> GetAllExpensesForUser(int userId, CancellationToken token = default)
     {
-        return await _table.Where(x => x.Owner.Id == userId).ToListAsync();
+        return await Table.Where(x => x.Owner.Id == userId).ToListAsync(cancellationToken: token);
     }
 }

@@ -7,37 +7,37 @@ namespace Expenda.Infrastructure.Persistence.Repositories;
 internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     private readonly ApplicationDbContext _context;
-    protected readonly DbSet<T> _table;
+    protected readonly DbSet<T> Table;
 
-    public GenericRepository(ApplicationDbContext context)
+    protected GenericRepository(ApplicationDbContext context)
     {
         _context = context;
-        _table = _context.Set<T>();
+        Table = _context.Set<T>();
     }
     
-    public void BatchCreate(IEnumerable<T> entities, CancellationToken token = default)
+    public void BatchCreate(IEnumerable<T> entities)
     {
-        _table.AddRange(entities);
+        Table.AddRange(entities);
     }
 
-    public void Create(T entity, CancellationToken token = default)
+    public void Create(T entity)
     {
-        _table.Add(entity);
+        Table.Add(entity);
     }
 
-    public void Delete(T entity, CancellationToken token = default)
+    public void Delete(T entity)
     {
-        _table.Remove(entity);
+        Table.Remove(entity);
     }
 
-    public void Update(T entity, CancellationToken token = default)
+    public void Update(T entity)
     {
         _context.Update(entity);
     }
 
     public async Task<T?> GetById(int id, CancellationToken token = default)
     {
-        return await _table.FirstOrDefaultAsync(x => x.Id == id);
+        return await Table.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: token);
     }
 
     public async Task<int> Commit(CancellationToken token = default)

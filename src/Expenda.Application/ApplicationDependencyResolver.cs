@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace WalkieTalkie.Application;
+namespace Expenda.Application;
 
 public static class ApplicationDependencyResolver
 {

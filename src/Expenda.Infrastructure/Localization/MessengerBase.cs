@@ -6,14 +6,14 @@ namespace Expenda.Infrastructure.Localization;
 
 internal abstract class MessengerBase<T> : IMessengerBase
 {
-    private readonly IStringLocalizer<T> _localizer = null!;
+    private readonly IStringLocalizer<T> _localizer;
 
     public MessengerBase(IStringLocalizer<T> localizer) =>
         _localizer = localizer;
 
     public BaseMessage GetMessage(string code)
     {
-        LocalizedString localizedString = _localizer[code];
+        var localizedString = _localizer[code];
         return new BaseMessage(code, localizedString.Value);
     }
 }

@@ -1,17 +1,14 @@
-using AutoMapper;
-
-using Expenda.Application.Architecture;
-using Expenda.Application.Architecture.Security;
-using Expenda.Application.Features.Expenses.Models.Response;
-using Expenda.Domain.Entities;
-using Expenda.Domain.Repositories;
-
-using MediatR;
-
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using AutoMapper;
+using Expenda.Application.Architecture;
+using Expenda.Application.Architecture.Security;
+using Expenda.Application.Features.ExpenseManager.Models.Response;
+using Expenda.Domain.Entities;
+using Expenda.Domain.Repositories;
+using MediatR;
 
-namespace Expenda.Application.Features.Expenses.Commands;
+namespace Expenda.Application.Features.ExpenseManager.Commands;
 
 public class CreateExpenseCommand : IRequest<TransactionResult<ExpenseResponse>>
 {

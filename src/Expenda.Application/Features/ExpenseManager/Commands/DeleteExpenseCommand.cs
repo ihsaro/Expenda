@@ -4,11 +4,11 @@ using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Repositories;
 using MediatR;
 
-namespace Expenda.Application.Features.Expenses.Commands;
+namespace Expenda.Application.Features.ExpenseManager.Commands;
 
 public class DeleteExpenseCommand : IRequest<TransactionResult<bool>>
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 }
 
 public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand, TransactionResult<bool>>
@@ -34,7 +34,7 @@ public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand,
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
         }
 
-        _repository.Delete(entity, token);
+        _repository.Delete(entity);
         
         var operation = await _repository.Commit(token);
 

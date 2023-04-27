@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Expenda.Application.Features.Expenses.Models.Response;
+namespace Expenda.Application.Features.MonthlyBudgetManager.Models.Response;
 
 public class MonthlyBudgetResponse
 {

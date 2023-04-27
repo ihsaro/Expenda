@@ -63,8 +63,7 @@ public class ApplicationTokenManager : IApplicationTokenManager
                 ClockSkew = TimeSpan.Zero
             }, out var validatedToken);
 
-            var jwtToken = validatedToken as JwtSecurityToken;
-            return jwtToken != null && jwtToken.ValidTo >= DateTime.UtcNow ? true : false;
+            return validatedToken is JwtSecurityToken jwtToken && jwtToken.ValidTo >= DateTime.UtcNow;
         }
         catch
         {

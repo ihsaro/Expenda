@@ -4,10 +4,10 @@ using Expenda.Web.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WalkieTalkie.API.Security;
-using WalkieTalkie.Application;
+using Expenda.Web.Security;
+using Expenda.Application;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     WebRootPath = "client/dist"
 });
@@ -48,7 +48,7 @@ builder.Services.AddAuthentication(options =>
         {
             context.Token = context.Request.Cookies["at"];
             return Task.CompletedTask;
-        },
+        }
     };
 });
 
@@ -66,14 +66,16 @@ app.MapControllerRoute(
 
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

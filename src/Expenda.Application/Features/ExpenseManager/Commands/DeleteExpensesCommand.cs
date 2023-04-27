@@ -4,7 +4,7 @@ using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
 using MediatR;
 
-namespace Expenda.Application.Features.Expenses.Commands;
+namespace Expenda.Application.Features.ExpenseManager.Commands;
 
 public class DeleteExpensesCommand : IRequest<TransactionResult<bool>>
 {

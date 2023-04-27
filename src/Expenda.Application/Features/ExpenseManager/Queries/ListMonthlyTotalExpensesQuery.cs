@@ -4,12 +4,11 @@ using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
-using Expenda.Domain.Entities;
 using MediatR;
 
-namespace Expenda.Application.Features.MonthlyBudget.Queries;
+namespace Expenda.Application.Features.ExpenseManager.Queries;
 
-public class RetrieveMonthlyBudgetQuery : IRequest<TransactionResult<RetrieveMonthlyBudgetQueryResponse>>
+public class ListMonthlyTotalExpensesQuery : IRequest<TransactionResult<ListMonthlyTotalExpensesQueryResponse>>
 {
     [Required]
     [JsonPropertyName("first_name")]
@@ -32,7 +31,7 @@ public class RetrieveMonthlyBudgetQuery : IRequest<TransactionResult<RetrieveMon
     public string Password { get; set; } = null!;
 }
 
-public class RetrieveMonthlyBudgetQueryResponse
+public class ListMonthlyTotalExpensesQueryResponse
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -50,20 +49,20 @@ public class RetrieveMonthlyBudgetQueryResponse
     public string Username { get; set; } = null!;
 }
 
-public class RetrieveMonthlyBudgetQueryHandler : IRequestHandler<RetrieveMonthlyBudgetQuery, TransactionResult<RetrieveMonthlyBudgetQueryResponse>>
+public class ListMonthlyTotalExpensesQueryHandler : IRequestHandler<ListMonthlyTotalExpensesQuery, TransactionResult<ListMonthlyTotalExpensesQueryResponse>>
 {
     private readonly IMapper _mapper;
     private readonly IApplicationUserManager _userManager;
     private readonly IAuthenticationMessenger _messenger;
 
-    public RetrieveMonthlyBudgetQueryHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
+    public ListMonthlyTotalExpensesQueryHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
     {
         _mapper = mapper;
         _userManager = userManager;
         _messenger = messenger;
     }
 
-    public Task<TransactionResult<RetrieveMonthlyBudgetQueryResponse>> Handle(RetrieveMonthlyBudgetQuery request, CancellationToken cancellationToken)
+    public Task<TransactionResult<ListMonthlyTotalExpensesQueryResponse>> Handle(ListMonthlyTotalExpensesQuery request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

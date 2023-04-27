@@ -1,9 +1,9 @@
 using AutoMapper;
-using Expenda.Application.Features.Expenses.Commands;
-using Expenda.Application.Features.Expenses.Models.Response;
+using Expenda.Application.Features.ExpenseManager.Commands;
+using Expenda.Application.Features.ExpenseManager.Models.Response;
 using Expenda.Domain.Entities;
 
-namespace Expenda.Application.Features.Expenses;
+namespace Expenda.Application.Features.ExpenseManager;
 
 public class ExpensesMappingProfile : Profile
 {

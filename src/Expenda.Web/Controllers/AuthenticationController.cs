@@ -1,5 +1,4 @@
-﻿using Expenda.Application.Architecture.Security;
-using Expenda.Application.Features.Authentication.Commands;
+﻿using Expenda.Application.Features.AuthenticationManager.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +24,7 @@ public class AuthenticationController : ControllerBase
 
         if (!result.Success || result.ResultObject is null) return Unauthorized();
         
-        HttpContext.Response.Cookies.Append("at", result.ResultObject.AccessToken, new CookieOptions()
+        HttpContext.Response.Cookies.Append("at", result.ResultObject.AccessToken, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,

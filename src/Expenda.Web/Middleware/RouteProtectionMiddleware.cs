@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Expenda.Application.Architecture.Security;
 
 namespace Expenda.Web.Middleware;
@@ -16,21 +15,19 @@ public class RouteProtectionMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var accessToken = context.Request.Cookies.Where(x => x.Key.Equals("at")).FirstOrDefault().Value;
+        var accessToken = context.Request.Cookies.FirstOrDefault(x => x.Key.Equals("at")).Value;
 
-        System.Console.WriteLine(_tokenManager.IsTokenValid(accessToken));
-
-        if (context.Request.Path.HasValue && !context.Request.Path.Value.Equals("/") && !context.Request.Path.Value.StartsWith("/api") && !_tokenManager.IsTokenValid(accessToken))
+        switch (context.Request.Path.HasValue)
         {
-            context.Response.Redirect("/");
-            return;
+            case true when !context.Request.Path.Value.Equals("/") && !context.Request.Path.Value.StartsWith("/api") && !_tokenManager.IsTokenValid(accessToken):
+                context.Response.Redirect("/");
+                return;
+            case true when !context.Request.Path.Value.StartsWith("/app") && !context.Request.Path.Value.StartsWith("/api") && _tokenManager.IsTokenValid(accessToken):
+                context.Response.Redirect("/app");
+                return;
+            default:
+                await _next(context);
+                break;
         }
-        else if (context.Request.Path.HasValue && !context.Request.Path.Value.StartsWith("/app") && !context.Request.Path.Value.StartsWith("/api") && _tokenManager.IsTokenValid(accessToken))
-        {
-            context.Response.Redirect("/app");
-            return;
-        }
-
-        await _next(context);
     }
 }

@@ -1,11 +1,11 @@
 using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Security;
-using Expenda.Application.Features.Expenses.Models.Response;
+using Expenda.Application.Features.ExpenseManager.Models.Response;
 using Expenda.Domain.Repositories;
 using MediatR;
 
-namespace Expenda.Application.Features.Expenses.Queries;
+namespace Expenda.Application.Features.ExpenseManager.Queries;
 
 public class GetExpensesQuery : IRequest<TransactionResult<IEnumerable<ExpenseResponse>>> {}
 

@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AutoMapper;
-using MediatR;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
+using MediatR;
 
-namespace Expenda.Application.Features.Authentication.Commands;
+namespace Expenda.Application.Features.AuthenticationManager.Commands;
 
 public class VerifyUserCommand : IRequest<TransactionResult<VerifyUserCommandResponse>>
 {
@@ -22,7 +22,7 @@ public class VerifyUserCommand : IRequest<TransactionResult<VerifyUserCommandRes
 public class VerifyUserCommandResponse
 {
     [JsonPropertyName("access_token")]
-    public string AccessToken { get; set; } = null!;
+    public string AccessToken { get; init; } = null!;
 }
 
 public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, TransactionResult<VerifyUserCommandResponse>>

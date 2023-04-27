@@ -10,6 +10,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExpenseMessenger.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Localization\MonthlyBudgetMessenger.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MonthlyBudgetMessenger.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

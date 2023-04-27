@@ -12,14 +12,14 @@ public class TransactionResult<T>
     public bool Success
     {
         get => success;
-        set => success = !ErrorMessages.IsNullOrEmpty() && value;
+        private set => success = !ErrorMessages.IsNullOrEmpty() && value;
     }
 
     [JsonPropertyName("error_messages")]
-    public List<ErrorMessage> ErrorMessages { get; init; }
+    public List<ErrorMessage> ErrorMessages { get; }
 
     [JsonPropertyName("result_object")]
-    public T? ResultObject { get; set; }
+    public T? ResultObject { get; }
 
     [JsonPropertyName("transaction_utc_timestamp")]
     public DateTime TransactionUtcTimestamp { get; private set; }
