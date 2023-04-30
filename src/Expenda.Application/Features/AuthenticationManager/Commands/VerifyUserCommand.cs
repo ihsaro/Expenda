@@ -19,11 +19,7 @@ public class VerifyUserCommand : IRequest<TransactionResult<VerifyUserCommandRes
     public string Password { get; set; } = null!;
 }
 
-public class VerifyUserCommandResponse
-{
-    [JsonPropertyName("access_token")]
-    public string AccessToken { get; init; } = null!;
-}
+public record VerifyUserCommandResponse([property: JsonPropertyName("access_token")] string AccessToken);
 
 public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, TransactionResult<VerifyUserCommandResponse>>
 {
@@ -46,7 +42,7 @@ public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, Trans
 
         if (user is not null && await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return new TransactionResult<VerifyUserCommandResponse>(new VerifyUserCommandResponse { AccessToken = _tokenManager.GenerateAndGetToken(user) });
+            return new TransactionResult<VerifyUserCommandResponse>(new VerifyUserCommandResponse(_tokenManager.GenerateAndGetToken(user)));
         }
 
         return new TransactionResult<VerifyUserCommandResponse>()

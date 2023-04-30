@@ -28,7 +28,8 @@ public static class InfrastructureDependencyResolver
 
         services
             .AddTransient<IAuthenticationMessenger, AuthenticationMessenger>()
-            .AddTransient<IExpenseMessenger, ExpenseMessenger>();
+            .AddTransient<IExpenseMessenger, ExpenseMessenger>()
+            .AddTransient<IMonthlyBudgetMessenger, MonthlyBudgetMessenger>();
 
         services
             .AddIdentityCore<ApplicationUser>()

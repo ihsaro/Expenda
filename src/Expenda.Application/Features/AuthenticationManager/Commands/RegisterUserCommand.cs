@@ -32,23 +32,14 @@ public class RegisterUserCommand : IRequest<TransactionResult<RegisterUserComman
     public string Password { get; set; } = null!;
 }
 
-public class RegisterUserCommandResponse
-{
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public string FirstName { get; set; } = null!;
-
-    [JsonPropertyName("last_name")]
-    public string LastName { get; set; } = null!;
-
-    [JsonPropertyName("email_address")]
-    public string EmailAddress { get; set; } = null!;
-
-    [JsonPropertyName("username")]
-    public string Username { get; set; } = null!;
-}
+public record RegisterUserCommandResponse
+(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("first_name")] string FirstName,
+    [property: JsonPropertyName("last_name")] string LastName,
+    [property: JsonPropertyName("email_address")] string EmailAddress,
+    [property: JsonPropertyName("username")] string Username
+);
 
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, TransactionResult<RegisterUserCommandResponse>>
 {

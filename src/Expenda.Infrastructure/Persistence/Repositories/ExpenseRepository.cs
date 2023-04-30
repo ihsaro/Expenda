@@ -12,6 +12,16 @@ internal class ExpenseRepository : GenericRepository<Expense>, IExpenseRepositor
 
     public async Task<IEnumerable<Expense>> GetAllExpensesForUser(int userId, CancellationToken token = default)
     {
-        return await Table.Where(x => x.Owner.Id == userId).ToListAsync(cancellationToken: token);
+        return await Table
+            .Where(x => x.Owner.Id == userId)
+            .ToListAsync(cancellationToken: token);
+    }
+
+    public async Task<IEnumerable<Expense>> GetExpensesByIds(IEnumerable<int> ids, CancellationToken token = default)
+    {
+        return await Table
+            .Where(x => ids.Contains(x.Id))
+            .Include(x => x.Owner)
+            .ToListAsync(cancellationToken: token);
     }
 }

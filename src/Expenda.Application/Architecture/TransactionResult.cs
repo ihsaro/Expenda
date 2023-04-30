@@ -12,7 +12,7 @@ public class TransactionResult<T>
     public bool Success
     {
         get => success;
-        private set => success = !ErrorMessages.IsNullOrEmpty() && value;
+        private set => success = ErrorMessages.IsNullOrEmpty() && value;
     }
 
     [JsonPropertyName("error_messages")]
@@ -26,8 +26,8 @@ public class TransactionResult<T>
 
     public TransactionResult()
     {
-        Success = true;
         ErrorMessages = new List<ErrorMessage>();
+        Success = true;
         TransactionUtcTimestamp = DateTime.UtcNow;
     }
 

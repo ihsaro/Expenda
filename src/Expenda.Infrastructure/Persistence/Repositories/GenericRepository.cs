@@ -29,6 +29,11 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         Table.Remove(entity);
     }
+    
+    public void BatchDelete(IEnumerable<T> entities)
+    {
+        Table.RemoveRange(entities);
+    }
 
     public void Update(T entity)
     {
