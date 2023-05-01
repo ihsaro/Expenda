@@ -8,11 +8,11 @@ namespace Expenda.Web.Controllers;
 [ApiController]
 [AllowAnonymous]
 [Route("api/v1/[controller]")]
-public class AuthenticationController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
     
-    public AuthenticationController(IMediator mediator)
+    public UserController(IMediator mediator)
     {
         _mediator = mediator;
     }
