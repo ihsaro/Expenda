@@ -1,16 +1,12 @@
 using Expenda.Application.Architecture.Security;
 using Expenda.Infrastructure;
-using Expenda.Web.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Expenda.Web.Security;
+using Expenda.API.Security;
 using Expenda.Application;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    WebRootPath = "client/dist"
-});
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
@@ -42,14 +38,6 @@ builder.Services.AddAuthentication(options =>
         RequireExpirationTime = true,
         ClockSkew = TimeSpan.Zero
     };
-    o.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            context.Token = context.Request.Cookies["at"];
-            return Task.CompletedTask;
-        }
-    };
 });
 
 builder.Services.AddAuthorization();
@@ -63,8 +51,6 @@ var app = builder.Build();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
@@ -80,7 +66,4 @@ if (app.Environment.IsProduction())
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRouteProtection();
-
-app.MapFallbackToFile("index.html");
 app.Run();

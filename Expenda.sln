@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expenda.Domain", "src\Expen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expenda.Infrastructure", "src\Expenda.Infrastructure\Expenda.Infrastructure.csproj", "{1A0EC3B9-9482-4C20-BEE3-DCC52F91A70D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expenda.Web", "src\Expenda.Web\Expenda.Web.csproj", "{C8164AA1-55AD-4B27-B403-49FF5D6C9F6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expenda.API", "src\Expenda.API\Expenda.API.csproj", "{C8164AA1-55AD-4B27-B403-49FF5D6C9F6B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B5932759-84E3-4D6D-BFB0-442F8B6E5328}"
 EndProject

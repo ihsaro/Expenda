@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Expenda.Web.Controllers;
+namespace Expenda.API.Controllers;
 
 [ApiController]
 [AllowAnonymous]
@@ -22,18 +22,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Login([FromBody] VerifyUserCommand command, CancellationToken token = default)
     {
         var result = await _mediator.Send(command, token);
-
-        if (!result.Success || result.ResultObject is null) return Unauthorized();
-        
-        HttpContext.Response.Cookies.Append("at", result.ResultObject.AccessToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Lax
-        });
-
-        return Ok();
-
+        return !result.Success || result.ResultObject is null ? Unauthorized() : Ok(result);
     }
     
     [HttpPost("register")]
@@ -47,6 +36,6 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserDataMetrics(CancellationToken token = default)
     {
-        return Ok(await _mediator.Send(new GetUserDataMetricsQuery()));
+        return Ok(await _mediator.Send(new GetUserDataMetricsQuery(), token));
     }
 }

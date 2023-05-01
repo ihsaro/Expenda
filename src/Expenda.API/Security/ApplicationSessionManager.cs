@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Entities;
 
-namespace Expenda.Web.Security;
+namespace Expenda.API.Security;
 
 internal class ApplicationSessionManager : IApplicationSessionManager
 {

@@ -3,7 +3,7 @@ using Expenda.Application.Features.ExpenseManager.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Expenda.Web.Controllers;
+namespace Expenda.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]

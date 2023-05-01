@@ -42,7 +42,8 @@ public static class InfrastructureDependencyResolver
 
         services
             .AddScoped<IExpenseRepository, ExpenseRepository>()
-            .AddScoped<IMonthlyBudgetRepository, MonthlyBudgetRepository>();
+            .AddScoped<IMonthlyBudgetRepository, MonthlyBudgetRepository>()
+            .AddScoped<IUserDataRepository, UserDataRepository>();
 
         return services;
     }
