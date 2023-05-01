@@ -7,7 +7,7 @@ using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Entities;
 using MediatR;
 
-namespace Expenda.Application.Features.AuthenticationManager.Commands;
+namespace Expenda.Application.Features.UserManager.Commands;
 
 public class RegisterUserCommand : IRequest<TransactionResult<RegisterUserCommandResponse>>
 {

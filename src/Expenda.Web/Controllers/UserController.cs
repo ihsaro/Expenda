@@ -1,4 +1,5 @@
-﻿using Expenda.Application.Features.AuthenticationManager.Commands;
+﻿using Expenda.Application.Features.UserManager.Commands;
+using Expenda.Application.Features.UserManager.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,5 +41,12 @@ public class UserController : ControllerBase
     {
         var result = await _mediator.Send(command, token);
         return result is { Success: true } ? Ok(result.ResultObject) : BadRequest(result);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetUserDataMetrics(CancellationToken token = default)
+    {
+        return Ok(await _mediator.Send(new GetUserDataMetricsQuery()));
     }
 }

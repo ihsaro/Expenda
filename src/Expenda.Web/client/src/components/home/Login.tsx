@@ -13,7 +13,7 @@ const Login: React.FC = () => {
     const [errors, setErrors] = React.useState<Array<string>>([]);
 
     const onFinish = async (values: FormFields) => {
-        let response = await fetch("api/v1/authentication/login", {
+        let response = await fetch("api/v1/users/login", {
             method: "POST",
             body: JSON.stringify({
                 username: values.username,
