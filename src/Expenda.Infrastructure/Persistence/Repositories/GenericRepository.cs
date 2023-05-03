@@ -15,38 +15,19 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         Table = _context.Set<T>();
     }
     
-    public void BatchCreate(IEnumerable<T> entities)
-    {
-        Table.AddRange(entities);
-    }
+    public virtual void BatchCreate(IEnumerable<T> entities) => Table.AddRange(entities);
 
-    public void Create(T entity)
-    {
-        Table.Add(entity);
-    }
+    public virtual void Create(T entity) => Table.Add(entity);
 
-    public void Delete(T entity)
-    {
-        Table.Remove(entity);
-    }
+    public virtual void Delete(T entity) => Table.Remove(entity);
     
-    public void BatchDelete(IEnumerable<T> entities)
-    {
-        Table.RemoveRange(entities);
-    }
+    public virtual void BatchDelete(IEnumerable<T> entities) => Table.RemoveRange(entities);
 
-    public void Update(T entity)
-    {
-        _context.Update(entity);
-    }
+    public virtual async Task<IEnumerable<T>> GetAll(int take = 1000, int skip = 0, CancellationToken token = default)
+        => await Table.Skip(skip).Take(take).ToListAsync(token);
 
-    public async Task<T?> GetById(int id, CancellationToken token = default)
-    {
-        return await Table.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: token);
-    }
+    public virtual async Task<T?> GetById(int id, CancellationToken token = default)
+        => await Table.FirstOrDefaultAsync(x => x.Id == id, token);
 
-    public async Task<int> Commit(CancellationToken token = default)
-    {
-        return await _context.SaveChangesAsync(token);
-    }
+    public virtual async Task<int> Commit(CancellationToken token = default) => await _context.SaveChangesAsync(token);
 }

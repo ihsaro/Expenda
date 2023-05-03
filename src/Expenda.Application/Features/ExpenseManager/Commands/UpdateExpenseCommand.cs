@@ -40,7 +40,8 @@ public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand,
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
         }
 
-        _repository.Update(entity);
+        // TO BE DONE
+
         await _repository.Commit(token);
 
         return new TransactionResult<ExpenseResponse>(_mapper.Map<ExpenseResponse>(entity));

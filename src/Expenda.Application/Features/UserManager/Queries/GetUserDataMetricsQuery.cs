@@ -27,9 +27,9 @@ public class GetUserDataMetricsQueryHandler : IRequestHandler<GetUserDataMetrics
         _repository = repository;
     }
 
-    public async Task<TransactionResult<UserDataMetricsResponse>> Handle(GetUserDataMetricsQuery request, CancellationToken cancellationToken)
+    public async Task<TransactionResult<UserDataMetricsResponse>> Handle(GetUserDataMetricsQuery request, CancellationToken token)
     {
-        var (totalAmountSpent, currentMonthlyBudget) = await _repository.GetUserDataMetrics(cancellationToken);
-        return new TransactionResult<UserDataMetricsResponse>(new UserDataMetricsResponse(totalAmountSpent, currentMonthlyBudget));
+        var metrics = await _repository.GetUserDataMetrics(token);
+        throw new NotImplementedException();
     }
 }

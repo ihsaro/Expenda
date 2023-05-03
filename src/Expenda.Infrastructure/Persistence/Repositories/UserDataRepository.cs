@@ -1,3 +1,4 @@
+using Expenda.Domain.Entities.Derived;
 using Expenda.Domain.Repositories;
 
 namespace Expenda.Infrastructure.Persistence.Repositories;
@@ -10,8 +11,8 @@ internal class UserDataRepository : IUserDataRepository
     {
         _context = context;
     }
-    
-    public Task<(float, float)> GetUserDataMetrics(CancellationToken token = default)
+
+    Task<UserDataMetrics> IUserDataRepository.GetUserDataMetrics(CancellationToken token)
     {
         throw new NotImplementedException();
     }
