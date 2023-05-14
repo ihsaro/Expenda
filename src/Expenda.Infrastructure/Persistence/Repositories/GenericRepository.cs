@@ -23,8 +23,10 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     
     public virtual void BatchDelete(IEnumerable<T> entities) => Table.RemoveRange(entities);
 
+    public virtual void Update(T entity) => Table.Update(entity);
+
     public virtual async Task<IEnumerable<T>> GetAll(int take = 1000, int skip = 0, CancellationToken token = default)
-        => await Table.Skip(skip).Take(take).ToListAsync(token);
+        => await Table.Skip(skip).Take(take).ToListAsync();
 
     public virtual async Task<T?> GetById(int id, CancellationToken token = default)
         => await Table.FirstOrDefaultAsync(x => x.Id == id, token);

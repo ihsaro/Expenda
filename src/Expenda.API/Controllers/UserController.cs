@@ -8,7 +8,7 @@ namespace Expenda.API.Controllers;
 
 [ApiController]
 [AllowAnonymous]
-[Route("api/v1/[controller]")]
+[Route("api/v1/user")]
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -32,7 +32,7 @@ public class UserController : ControllerBase
         return result is { Success: true } ? Ok(result.ResultObject) : BadRequest(result);
     }
 
-    [HttpGet]
+    [HttpGet("metrics")]
     [Authorize]
     public async Task<IActionResult> GetUserDataMetrics(CancellationToken token = default)
     {

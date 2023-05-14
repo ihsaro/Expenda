@@ -39,21 +39,22 @@ public class CreateExpenseCommandHandler : IRequestHandler<CreateExpenseCommand,
 {
     private readonly IExpenseRepository _repository;
     private readonly IMapper _mapper;
-    private readonly IApplicationSessionManager _sessionManager;
+    private readonly IApplicationSessionManager _session;
 
-    public CreateExpenseCommandHandler(IExpenseRepository repository, IMapper mapper, IApplicationSessionManager sessionManager)
+    public CreateExpenseCommandHandler(IExpenseRepository repository, IMapper mapper, IApplicationSessionManager session)
     {
         _repository = repository;
         _mapper = mapper;
-        _sessionManager = sessionManager;
+        _session = session;
     }
 
     public async Task<TransactionResult<ExpenseResponse>> Handle(CreateExpenseCommand command, CancellationToken token)
     {
-        var entity = _mapper.Map<Expense>(command);
-        entity.Owner = _sessionManager.CurrentUser;
+        var entity = _mapper.Map<Expense>(command, opt => opt.Items["Owner"] = _session.CurrentUser);
+        
         _repository.Create(entity);
         await _repository.Commit(token);
+
         return new TransactionResult<ExpenseResponse>(_mapper.Map<ExpenseResponse>(entity));
     }
 }

@@ -8,6 +8,7 @@ public class MonthlyBudgetMappingProfile : Profile
 {
     public MonthlyBudgetMappingProfile()
     {
-        CreateMap<SetMonthlyBudgetCommand, MonthlyBudget>();
+        CreateMap<SetMonthlyBudgetCommand, MonthlyBudget>()
+            .ForMember(dest => dest.Owner, opt => opt.MapFrom((src, dest, _, context) => context.Items["Owner"]));
     }
 }

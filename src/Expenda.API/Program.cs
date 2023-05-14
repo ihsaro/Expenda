@@ -55,7 +55,11 @@ app.MapControllerRoute(
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Expenda V1");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 if (app.Environment.IsProduction())
@@ -65,5 +69,10 @@ if (app.Environment.IsProduction())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();

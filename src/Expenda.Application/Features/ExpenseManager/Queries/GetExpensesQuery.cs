@@ -12,19 +12,19 @@ public class GetExpensesQuery : IRequest<TransactionResult<IEnumerable<ExpenseRe
 public class GetExpensesQueryHandler : IRequestHandler<GetExpensesQuery, TransactionResult<IEnumerable<ExpenseResponse>>>
 {
     private readonly IMapper _mapper;
-    private readonly IApplicationSessionManager _sessionManager;
+    private readonly IApplicationSessionManager _session;
     private readonly IExpenseRepository _repository;
 
-    public GetExpensesQueryHandler(IMapper mapper, IApplicationSessionManager sessionManager, IExpenseRepository repository)
+    public GetExpensesQueryHandler(IMapper mapper, IApplicationSessionManager session, IExpenseRepository repository)
     {
         _mapper = mapper;
-        _sessionManager = sessionManager;
+        _session = session;
         _repository = repository;
     }
 
     public async Task<TransactionResult<IEnumerable<ExpenseResponse>>> Handle(GetExpensesQuery request, CancellationToken token)
     {
-        var entities = await _repository.GetAllExpensesForUser(_sessionManager.CurrentUser.Id, token);
+        var entities = await _repository.GetAllExpensesForUser(_session.CurrentUser.Id, token);
         return new TransactionResult<IEnumerable<ExpenseResponse>>(_mapper.Map<IEnumerable<ExpenseResponse>>(entities));
     }
 }

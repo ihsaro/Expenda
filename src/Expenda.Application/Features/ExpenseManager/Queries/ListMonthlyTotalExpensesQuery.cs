@@ -10,43 +10,10 @@ namespace Expenda.Application.Features.ExpenseManager.Queries;
 
 public class ListMonthlyTotalExpensesQuery : IRequest<TransactionResult<ListMonthlyTotalExpensesQueryResponse>>
 {
-    [Required]
-    [JsonPropertyName("first_name")]
-    public string FirstName { get; set; } = null!;
-
-    [Required]
-    [JsonPropertyName("last_name")]
-    public string LastName { get; set; } = null!;
-
-    [Required]
-    [JsonPropertyName("email_address")]
-    public string EmailAddress { get; set; } = null!;
-
-    [Required]
-    [JsonPropertyName("username")]
-    public string Username { get; set; } = null!;
-
-    [Required]
-    [JsonPropertyName("password")]
-    public string Password { get; set; } = null!;
 }
 
 public class ListMonthlyTotalExpensesQueryResponse
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
-    [JsonPropertyName("first_name")]
-    public string FirstName { get; set; } = null!;
-
-    [JsonPropertyName("last_name")]
-    public string LastName { get; set; } = null!;
-
-    [JsonPropertyName("email_address")]
-    public string EmailAddress { get; set; } = null!;
-
-    [JsonPropertyName("username")]
-    public string Username { get; set; } = null!;
 }
 
 public class ListMonthlyTotalExpensesQueryHandler : IRequestHandler<ListMonthlyTotalExpensesQuery, TransactionResult<ListMonthlyTotalExpensesQueryResponse>>

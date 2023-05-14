@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Expenda.API.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1")]
 public class MonthlyBudgetController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,7 +16,7 @@ public class MonthlyBudgetController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("monthly-budgets")]
     public IActionResult ListMonthlyBudgets(ListMonthlyBudgetsQuery query, CancellationToken token = default)
     {
         return Ok(_mediator.Send(query, token));
@@ -24,12 +24,13 @@ public class MonthlyBudgetController : ControllerBase
 
     [HttpPost]
     [HttpPut]
+    [Route("monthly-budget")]
     public IActionResult SetMonthlyBudget(SetMonthlyBudgetCommand command, CancellationToken token = default)
     {
         throw new NotImplementedException();
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("monthly-budget/{id}")]
     public IActionResult GetMonthlyBudget([FromRoute] int id, CancellationToken token = default)
     {
         throw new NotImplementedException();

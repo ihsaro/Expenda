@@ -12,7 +12,7 @@ internal class UserDataRepository : IUserDataRepository
         _context = context;
     }
 
-    Task<UserDataMetrics> IUserDataRepository.GetUserDataMetrics(CancellationToken token)
+    public Task<UserDataMetrics> GetUserDataMetrics(CancellationToken token)
     {
         throw new NotImplementedException();
     }

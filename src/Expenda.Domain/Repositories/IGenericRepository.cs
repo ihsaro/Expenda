@@ -8,6 +8,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     void Create(T entity);
     void Delete(T entity);
     void BatchDelete(IEnumerable<T> entities);
+    void Update(T entity);
     Task<IEnumerable<T>> GetAll(int take = 1000, int skip = 0, CancellationToken token = default);
     Task<T?> GetById(int id, CancellationToken token = default);
     Task<int> Commit(CancellationToken token = default);

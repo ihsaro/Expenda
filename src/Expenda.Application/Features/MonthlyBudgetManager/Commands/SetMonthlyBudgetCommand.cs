@@ -48,7 +48,7 @@ public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCo
         }
 
         if (entity is null)
-            _repository.Create(_mapper.Map<MonthlyBudget>(entity));
+            _repository.Create(_mapper.Map<MonthlyBudget>(entity, opt => opt.Items["Owner"] = _session.CurrentUser));
         else
             entity.Budget = command.Budget;
 
