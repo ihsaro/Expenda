@@ -1,11 +1,13 @@
 ﻿using Expenda.Application.Features.ExpenseManager.Commands;
 using Expenda.Application.Features.ExpenseManager.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenda.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1")]
 public class ExpensesController : ControllerBase
 {
