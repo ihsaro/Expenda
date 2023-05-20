@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Expenda.Application.Features.ExpenseManager.Commands;
 
-public class CreateExpenseCommand : IRequest<TransactionResult<ExpenseResponse>>
+public class CreateExpenseCommand : IRequest<TransactionResult<ExpenseResponse>>, IValidatableObject
 {
     [Required]
     [MinLength(1)]
@@ -32,7 +32,24 @@ public class CreateExpenseCommand : IRequest<TransactionResult<ExpenseResponse>>
 
     [Required]
     [JsonPropertyName("transaction_date")]
-    public DateOnly TransactionDate { get; set; }
+    public DateTime TransactionDate { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var errors = new List<ValidationResult>();
+
+        if (Price <= 0)
+        {
+            errors.Add(new ValidationResult("Price cannot be 0 or negative"));
+        }
+
+        if (Quantity <= 0)
+        {
+            errors.Add(new ValidationResult("Quantity cannot be 0 or negative"));
+        }
+
+        return errors;
+    }
 }
 
 public class CreateExpenseCommandHandler : IRequestHandler<CreateExpenseCommand, TransactionResult<ExpenseResponse>>

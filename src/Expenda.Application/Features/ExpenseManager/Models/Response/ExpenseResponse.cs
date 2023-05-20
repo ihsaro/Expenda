@@ -8,5 +8,5 @@ public record ExpenseResponse(
     [property: JsonPropertyName("description")] string? Description,
     [property: JsonPropertyName("price")] double Price,
     [property: JsonPropertyName("quantity")] int Quantity,
-    [property: JsonPropertyName("transaction_date")] DateOnly TransactionDate
+    [property: JsonPropertyName("transaction_date")] DateTime TransactionDate
 );

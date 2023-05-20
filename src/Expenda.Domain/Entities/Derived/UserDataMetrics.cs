@@ -6,5 +6,4 @@ public class UserDataMetrics
     public string LastItemPurchased { get; set; } = null!;
     public int LastItemPurchasedQuantity { get; set; }
     public float LastItemPurchasedTotalPrice { get; set; }
-    public float CurrentMonthlyBudget { get; set; }
 }

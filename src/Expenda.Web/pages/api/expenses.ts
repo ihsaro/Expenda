@@ -11,11 +11,17 @@ export default async (
         const response = await fetch(
             `${process.env.REST_HOST}/${Endpoints.EXPENSES}`,
             {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${req.cookies["at"]}`,
+                },
             }
         );
 
-        const data: TransactionResult<Array<ExpenseResponse>> = await response.json();
+        const data: TransactionResult<Array<ExpenseResponse>> =
+            await response.json();
+
+        res.status(200);
         res.json(data);
     }
 };

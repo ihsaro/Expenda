@@ -21,8 +21,6 @@ export default async (
 
         const data: TransactionResult<LoginResponse> = await response.json();
 
-        console.log(data);
-
         if (data.success) {
             res.setHeader(
                 "set-cookie",

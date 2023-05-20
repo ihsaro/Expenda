@@ -4,5 +4,5 @@ namespace Expenda.Domain.Repositories;
 
 public interface IUserDataRepository
 {
-    Task<UserDataMetrics> GetUserDataMetrics(CancellationToken token = default);
+    Task<UserDataMetrics> GetUserDataMetrics(int userId, CancellationToken token = default);
 }
