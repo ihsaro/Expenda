@@ -15,10 +15,18 @@ const Expenses: React.FC = () => {
                 <Header className="h-max bg-inherit">
                     <Row gutter={16}>
                         <Col>
-                            <Button type="primary" icon={<PlusOutlined />}>Add</Button>
+                            <Button type="primary" icon={<PlusOutlined />}>
+                                Add
+                            </Button>
                         </Col>
                         <Col>
-                            <Button type="primary" danger icon={<DeleteOutlined />}>Delete Selected</Button>
+                            <Button
+                                type="primary"
+                                danger
+                                icon={<DeleteOutlined />}
+                            >
+                                Delete Selected
+                            </Button>
                         </Col>
                     </Row>
                 </Header>

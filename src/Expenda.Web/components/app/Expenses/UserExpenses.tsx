@@ -48,7 +48,7 @@ const UserExpenses: React.FC = () => {
         fetchExpenses();
     }, []);
 
-    return <Table dataSource={expenses} columns={columns} />
-}
+    return <Table dataSource={expenses} columns={columns} />;
+};
 
 export default UserExpenses;
