@@ -1,13 +1,21 @@
 import * as React from "react";
 
-import { Button, Col, Layout, Row } from "antd";
+import { Button, Col, Layout, Modal, Row } from "antd";
 import Sidebar, { Feature } from "components/app/Sidebar";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { UserExpenses } from "components/app/Expenses";
+import UpsertExpense from "components/app/Expenses/UpsertExpense";
 
 const { Header, Footer, Content } = Layout;
 
 const Expenses: React.FC = () => {
+    const [isUpsertExpenseModalOpen, setIsUpsertExpenseModalOpen] =
+        React.useState<boolean>(false);
+
+    const openUpsertExpenseModal = () => setIsUpsertExpenseModalOpen(true);
+
+    const closeUpsertExpenseModal = () => setIsUpsertExpenseModalOpen(false);
+
     return (
         <Layout className="fixed top-0 left-0 h-screen w-full">
             <Sidebar currentFeature={Feature.EXPENSES} />
@@ -15,7 +23,11 @@ const Expenses: React.FC = () => {
                 <Header className="h-max bg-inherit">
                     <Row gutter={16}>
                         <Col>
-                            <Button type="primary" icon={<PlusOutlined />}>
+                            <Button
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                onClick={openUpsertExpenseModal}
+                            >
                                 Add
                             </Button>
                         </Col>
@@ -31,7 +43,14 @@ const Expenses: React.FC = () => {
                     </Row>
                 </Header>
                 <Content className="pl-12 pt-5 pr-12">
-                    <UserExpenses />
+                    <UserExpenses selectable />
+                    <Modal
+                        title="Basic Modal"
+                        open={isUpsertExpenseModalOpen}
+                        onCancel={closeUpsertExpenseModal}
+                    >
+                        <UpsertExpense type="ADD" />
+                    </Modal>
                 </Content>
             </Layout>
         </Layout>

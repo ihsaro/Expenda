@@ -3,8 +3,13 @@ import { ExpenseResponse } from "models/ExpenseResponse";
 import { TransactionResult } from "models/TransactionResult";
 import * as React from "react";
 
-const UserExpenses: React.FC = () => {
+interface Props {
+    selectable?: boolean;
+}
+
+const UserExpenses: React.FC<Props> = (props) => {
     const [expenses, setExpenses] = React.useState<Array<ExpenseResponse>>([]);
+    const [loading, setLoading] = React.useState<boolean>(true);
 
     const columns = [
         {
@@ -34,6 +39,13 @@ const UserExpenses: React.FC = () => {
         },
     ];
 
+    const rowSelectionProperties = {
+        type: "checkbox",
+        onChange: (selectedRowKeys: React.Key[], selectedRows: ExpenseResponse[]) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+    };
+
     React.useEffect(() => {
         let fetchExpenses = async () => {
             let response = await fetch("/api/expenses", {
@@ -42,13 +54,20 @@ const UserExpenses: React.FC = () => {
 
             let data: TransactionResult<Array<ExpenseResponse>> =
                 await response.json();
+
             setExpenses(data.result_object);
+            setLoading(false);
         };
 
         fetchExpenses();
     }, []);
 
-    return <Table dataSource={expenses} columns={columns} />;
+    return <Table rowSelection={props.selectable ? {
+        type: "checkbox",
+        onChange: (selectedRowKeys: React.Key[], selectedRows: ExpenseResponse[]) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+    } : null} dataSource={expenses} columns={columns} loading={loading} />;
 };
 
 export default UserExpenses;

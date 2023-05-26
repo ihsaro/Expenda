@@ -9,7 +9,7 @@ const UserDataMetrics: React.FC = () => {
             last_item_purchased: "",
             last_item_purchased_quantity: 0,
             last_item_purchased_total_price: 0,
-            total_amount_spent: 0
+            total_amount_spent: 0,
         });
 
     React.useEffect(() => {
@@ -29,24 +29,24 @@ const UserDataMetrics: React.FC = () => {
 
     return (
         <Row gutter={16}>
-            <Col md={6}>
-                <Card bordered={false}>
+            <Col md={6} className="w-full mb-2">
+                <Card bordered={false} className="h-full w-full">
                     <Statistic
                         title="Last Item Purchased"
                         value={userDataMetrics.last_item_purchased}
                     />
                 </Card>
             </Col>
-            <Col md={6}>
-                <Card bordered={false}>
+            <Col md={6} className="w-full mb-2">
+                <Card bordered={false} className="h-full w-full">
                     <Statistic
                         title="Last Item Purchased Quantity"
                         value={userDataMetrics.last_item_purchased_quantity}
                     />
                 </Card>
             </Col>
-            <Col md={6}>
-                <Card bordered={false}>
+            <Col md={6} className="w-full mb-2">
+                <Card bordered={false} className="h-full w-full">
                     <Statistic
                         title="Last Item Purchased Total Price"
                         value={userDataMetrics.last_item_purchased_total_price}
@@ -54,8 +54,8 @@ const UserDataMetrics: React.FC = () => {
                     />
                 </Card>
             </Col>
-            <Col md={6}>
-                <Card bordered={false}>
+            <Col md={6} className="w-full mb-2">
+                <Card bordered={false} className="h-full">
                     <Statistic
                         title="Total Amount Spent"
                         value={userDataMetrics.total_amount_spent}

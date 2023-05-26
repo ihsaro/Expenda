@@ -1,8 +1,5 @@
-export interface ExpenseResponse {
+import { ExpenseRequest } from "models/ExpenseRequest";
+
+export interface ExpenseResponse extends ExpenseRequest {
     id: number;
-    name: string;
-    description?: string;
-    price: number;
-    quantity: number;
-    transaction_date: Date;
 }
