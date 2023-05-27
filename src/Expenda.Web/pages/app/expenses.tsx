@@ -2,7 +2,12 @@ import * as React from "react";
 
 import { Button, Col, Layout, Modal, Row } from "antd";
 import Sidebar, { Feature } from "components/app/Sidebar";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    CloseCircleOutlined,
+    CloseOutlined,
+    DeleteOutlined,
+    PlusOutlined,
+} from "@ant-design/icons";
 import { UserExpenses } from "components/app/Expenses";
 import UpsertExpense from "components/app/Expenses/UpsertExpense";
 
@@ -44,13 +49,16 @@ const Expenses: React.FC = () => {
                 </Header>
                 <Content className="pl-12 pt-5 pr-12">
                     <UserExpenses selectable />
-                    <Modal
-                        title="Basic Modal"
-                        open={isUpsertExpenseModalOpen}
-                        onCancel={closeUpsertExpenseModal}
-                    >
-                        <UpsertExpense type="ADD" />
-                    </Modal>
+                    {isUpsertExpenseModalOpen && (
+                        <Modal
+                            title="Basic Modal"
+                            open={isUpsertExpenseModalOpen}
+                            onCancel={closeUpsertExpenseModal}
+                            closeIcon={<CloseCircleOutlined />}
+                        >
+                            <UpsertExpense type="ADD" />
+                        </Modal>
+                    )}
                 </Content>
             </Layout>
         </Layout>

@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Row } from "antd";
+import {
+    Button,
+    Checkbox,
+    Col,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    Row,
+} from "antd";
 
 import { ExpenseResponse } from "models/ExpenseResponse";
 import { TransactionResult } from "models/TransactionResult";
@@ -21,6 +30,7 @@ const UpsertExpense: React.FC<Props> = (props) => {
         quantity: 0,
         transaction_date: new Date(),
     });
+    const [form] = Form.useForm();
 
     React.useEffect(() => {
         let fetchExpense = async () => {
@@ -44,12 +54,13 @@ const UpsertExpense: React.FC<Props> = (props) => {
         if (props.type === "EDIT") fetchExpense();
     }, []);
 
-    const saveExpense = async () => { };
+    const saveExpense = async () => {};
 
     return (
         <Form
             name="upsert-expense"
             layout="vertical"
+            form={form}
             onFinish={saveExpense}
         >
             <Form.Item
@@ -62,10 +73,7 @@ const UpsertExpense: React.FC<Props> = (props) => {
                 <Input />
             </Form.Item>
 
-            <Form.Item
-                label="Description"
-                name="description"
-            >
+            <Form.Item label="Description" name="description">
                 <Input.TextArea />
             </Form.Item>
 
@@ -75,10 +83,14 @@ const UpsertExpense: React.FC<Props> = (props) => {
                         label="Quantity"
                         name="quantity"
                         rules={[
-                            { required: true, message: "Please input the item quantity" },
+                            {
+                                required: true,
+                                message: "Please input the item quantity",
+                            },
                         ]}
+                        initialValue={1}
                     >
-                        <InputNumber defaultValue={1} min={1} />
+                        <InputNumber min={1} />
                     </Form.Item>
                 </Col>
                 <Col>
@@ -86,23 +98,37 @@ const UpsertExpense: React.FC<Props> = (props) => {
                         label="Price"
                         name="price"
                         rules={[
-                            { required: true, message: "Please input the item price" },
+                            {
+                                required: true,
+                                message: "Please input the item price",
+                            },
+                        ]}
+                        initialValue={0}
+                    >
+                        <InputNumber
+                            defaultValue={0}
+                            min={0}
+                            precision={2}
+                            keyboard={false}
+                            controls={false}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col>
+                    <Form.Item
+                        label="Transaction Date"
+                        name="date"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input the transaction date",
+                            },
                         ]}
                     >
-                        <InputNumber defaultValue={0} min={0} precision={2} keyboard={false} controls={false} />
+                        <DatePicker />
                     </Form.Item>
                 </Col>
             </Row>
-
-            <Form.Item
-                label="Transaction Date"
-                name="date"
-                rules={[
-                    { required: true, message: "Please input the transaction date" },
-                ]}
-            >
-                <DatePicker />
-            </Form.Item>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">

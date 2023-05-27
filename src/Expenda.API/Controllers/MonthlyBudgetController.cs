@@ -30,8 +30,8 @@ public class MonthlyBudgetController : ControllerBase
         throw new NotImplementedException();
     }
 
-    [HttpGet("monthly-budget/{id}")]
-    public IActionResult GetMonthlyBudget([FromRoute] int id, CancellationToken token = default)
+    [HttpGet("monthly-budget/{year}")]
+    public IActionResult GetMonthlyBudget([FromRoute] int year, CancellationToken token = default)
     {
         throw new NotImplementedException();
     }

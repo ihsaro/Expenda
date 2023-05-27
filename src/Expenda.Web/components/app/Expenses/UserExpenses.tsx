@@ -41,8 +41,15 @@ const UserExpenses: React.FC<Props> = (props) => {
 
     const rowSelectionProperties = {
         type: "checkbox",
-        onChange: (selectedRowKeys: React.Key[], selectedRows: ExpenseResponse[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        onChange: (
+            selectedRowKeys: React.Key[],
+            selectedRows: ExpenseResponse[]
+        ) => {
+            console.log(
+                `selectedRowKeys: ${selectedRowKeys}`,
+                "selectedRows: ",
+                selectedRows
+            );
         },
     };
 
@@ -62,12 +69,30 @@ const UserExpenses: React.FC<Props> = (props) => {
         fetchExpenses();
     }, []);
 
-    return <Table rowSelection={props.selectable ? {
-        type: "checkbox",
-        onChange: (selectedRowKeys: React.Key[], selectedRows: ExpenseResponse[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-    } : null} dataSource={expenses} columns={columns} loading={loading} />;
+    return (
+        <Table
+            rowSelection={
+                props.selectable
+                    ? {
+                          type: "checkbox",
+                          onChange: (
+                              selectedRowKeys: React.Key[],
+                              selectedRows: ExpenseResponse[]
+                          ) => {
+                              console.log(
+                                  `selectedRowKeys: ${selectedRowKeys}`,
+                                  "selectedRows: ",
+                                  selectedRows
+                              );
+                          },
+                      }
+                    : null
+            }
+            dataSource={expenses}
+            columns={columns}
+            loading={loading}
+        />
+    );
 };
 
 export default UserExpenses;
