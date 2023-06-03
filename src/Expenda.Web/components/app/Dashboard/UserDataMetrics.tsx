@@ -30,7 +30,7 @@ const UserDataMetrics: React.FC = () => {
     return (
         <Row gutter={16}>
             <Col md={6} className="w-full mb-2">
-                <Card bordered={false} className="h-full w-full">
+                <Card className="h-full w-full">
                     <Statistic
                         title="Last Item Purchased"
                         value={userDataMetrics.last_item_purchased}
@@ -38,7 +38,7 @@ const UserDataMetrics: React.FC = () => {
                 </Card>
             </Col>
             <Col md={6} className="w-full mb-2">
-                <Card bordered={false} className="h-full w-full">
+                <Card className="h-full w-full">
                     <Statistic
                         title="Last Item Purchased Quantity"
                         value={userDataMetrics.last_item_purchased_quantity}
@@ -46,7 +46,7 @@ const UserDataMetrics: React.FC = () => {
                 </Card>
             </Col>
             <Col md={6} className="w-full mb-2">
-                <Card bordered={false} className="h-full w-full">
+                <Card className="h-full w-full">
                     <Statistic
                         title="Last Item Purchased Total Price"
                         value={userDataMetrics.last_item_purchased_total_price}
@@ -55,7 +55,7 @@ const UserDataMetrics: React.FC = () => {
                 </Card>
             </Col>
             <Col md={6} className="w-full mb-2">
-                <Card bordered={false} className="h-full">
+                <Card className="h-full">
                     <Statistic
                         title="Total Amount Spent"
                         value={userDataMetrics.total_amount_spent}

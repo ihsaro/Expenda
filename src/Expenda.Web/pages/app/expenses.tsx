@@ -50,14 +50,11 @@ const Expenses: React.FC = () => {
                 <Content className="pl-12 pt-5 pr-12">
                     <UserExpenses selectable />
                     {isUpsertExpenseModalOpen && (
-                        <Modal
-                            title="Basic Modal"
-                            open={isUpsertExpenseModalOpen}
-                            onCancel={closeUpsertExpenseModal}
-                            closeIcon={<CloseCircleOutlined />}
-                        >
-                            <UpsertExpense type="ADD" />
-                        </Modal>
+                        <UpsertExpense
+                            onCloseUpsertExpenseModal={closeUpsertExpenseModal}
+                            type="ADD"
+                            visible={isUpsertExpenseModalOpen}
+                        />
                     )}
                 </Content>
             </Layout>
