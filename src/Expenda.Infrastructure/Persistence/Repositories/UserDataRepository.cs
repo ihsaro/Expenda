@@ -19,30 +19,31 @@ internal class UserDataRepository : IUserDataRepository
         var query = $@"
                         SELECT
                             SUM(e.""Price"" * e.""Quantity"") AS TotalAmountSpent,
-                            e_last.""Name"" AS LastItemPurchased,
-                            e_last.""Quantity"" AS LastItemPurchasedQuantity,
-                            (e_last.""Quantity"" * e_last.""Price"") AS LastItemPurchasedTotalPrice
+                            MAX(e_last.""Name"") AS LastItemPurchased,
+                            MAX(e_last.""Quantity"") AS LastItemPurchasedQuantity,
+                            MAX(e_last.""Quantity"" * e_last.""Price"") AS LastItemPurchasedTotalPrice
                         FROM
                             public.""Expenses"" e
                         JOIN
                             (
                                 SELECT
+                                    ""ApplicationUser"",
                                     ""Id"",
                                     ""Name"",
                                     ""Quantity"",
                                     ""Price""
                                 FROM
                                     public.""Expenses""
+                                WHERE
+                                    ""ApplicationUser"" = @UserId
                                 ORDER BY
                                     ""LastUpdatedTimestamp"" DESC
                                 LIMIT 1
-                            ) e_last ON e.""Id"" = e_last.""Id""
+                            ) e_last ON e.""ApplicationUser"" = e_last.""ApplicationUser""
                         WHERE
                             e.""ApplicationUser"" = @UserId
                         GROUP BY
-                            e_last.""Name"",
-                            e_last.""Quantity"",
-                            e_last.""Price"";
+                            e.""ApplicationUser"";
                         ";
 
         using var connection = _context.Database.GetDbConnection();
