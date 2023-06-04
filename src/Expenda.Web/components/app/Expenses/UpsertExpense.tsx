@@ -56,7 +56,16 @@ const UpsertExpense: React.FC<Props> = (props) => {
     }, []);
 
     const saveExpense = async (values: ExpenseRequest) => {
-        console.log(values);
+        let response = await fetch("/api/expenses", {
+            method: "POST",
+            body: JSON.stringify({
+                name: values.name,
+                description: values.description,
+                price: values.price,
+                quantity: values.quantity,
+                transaction_date: values.transaction_date,
+            }),
+        });
     };
 
     return (
