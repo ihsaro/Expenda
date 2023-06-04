@@ -66,6 +66,10 @@ const UpsertExpense: React.FC<Props> = (props) => {
                 transaction_date: values.transaction_date,
             }),
         });
+
+        if (response.status === 201) {
+            props.onCloseUpsertExpenseModal();
+        }
     };
 
     return (

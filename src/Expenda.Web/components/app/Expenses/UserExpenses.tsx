@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import { ColumnsType } from "antd/es/table";
 import { ExpenseResponse } from "models/ExpenseResponse";
 import { TransactionResult } from "models/TransactionResult";
 import * as React from "react";
@@ -11,7 +12,7 @@ const UserExpenses: React.FC<Props> = (props) => {
     const [expenses, setExpenses] = React.useState<Array<ExpenseResponse>>([]);
     const [loading, setLoading] = React.useState<boolean>(true);
 
-    const columns = [
+    const columns: ColumnsType<ExpenseResponse> = [
         {
             title: "Item Name",
             dataIndex: "name",
@@ -36,22 +37,9 @@ const UserExpenses: React.FC<Props> = (props) => {
             title: "Transaction Date",
             dataIndex: "transaction_date",
             key: "transaction_date",
+            render: (value: string) => value.split("T")[0],
         },
     ];
-
-    const rowSelectionProperties = {
-        type: "checkbox",
-        onChange: (
-            selectedRowKeys: React.Key[],
-            selectedRows: ExpenseResponse[]
-        ) => {
-            console.log(
-                `selectedRowKeys: ${selectedRowKeys}`,
-                "selectedRows: ",
-                selectedRows
-            );
-        },
-    };
 
     React.useEffect(() => {
         let fetchExpenses = async () => {
@@ -88,6 +76,7 @@ const UserExpenses: React.FC<Props> = (props) => {
                       }
                     : null
             }
+            rowKey="id"
             dataSource={expenses}
             columns={columns}
             loading={loading}
