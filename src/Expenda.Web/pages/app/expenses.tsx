@@ -3,15 +3,13 @@ import * as React from "react";
 import { Button, Col, Layout, Modal, Row } from "antd";
 import Sidebar, { Feature } from "components/app/Sidebar";
 import {
-    CloseCircleOutlined,
-    CloseOutlined,
     DeleteOutlined,
     PlusOutlined,
 } from "@ant-design/icons";
 import { UserExpenses } from "components/app/Expenses";
 import UpsertExpense from "components/app/Expenses/UpsertExpense";
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 const Expenses: React.FC = () => {
     const [isUpsertExpenseModalOpen, setIsUpsertExpenseModalOpen] =
