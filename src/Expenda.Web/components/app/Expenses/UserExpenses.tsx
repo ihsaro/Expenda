@@ -5,6 +5,7 @@ import { TransactionResult } from "models/TransactionResult";
 import * as React from "react";
 
 interface Props {
+    refreshCounter?: number;
     selectable?: boolean;
 }
 
@@ -55,7 +56,7 @@ const UserExpenses: React.FC<Props> = (props) => {
         };
 
         fetchExpenses();
-    }, []);
+    }, [props.refreshCounter]);
 
     return (
         <Table

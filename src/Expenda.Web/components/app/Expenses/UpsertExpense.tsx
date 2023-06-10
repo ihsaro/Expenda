@@ -21,6 +21,7 @@ interface Props {
     visible?: boolean;
 
     onCloseUpsertExpenseModal(): void;
+    onSuccess(): void;
 }
 
 const UpsertExpense: React.FC<Props> = (props) => {
@@ -69,6 +70,7 @@ const UpsertExpense: React.FC<Props> = (props) => {
 
         if (response.status === 201) {
             props.onCloseUpsertExpenseModal();
+            props.onSuccess();
         }
     };
 
