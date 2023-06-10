@@ -3,12 +3,15 @@ import "styles/globals.css";
 import * as React from "react";
 import type { AppProps } from "next/app";
 import { ConfigProvider, theme } from "antd";
+import { ExpensesContext } from "contexts/ExpensesContext";
 import { SidebarContext } from "contexts/SidebarContext";
 import { ThemeContext } from "contexts/ThemeContext";
+import { ExpenseResponse } from "models/ExpenseResponse";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     const [sidebarExpanded, setSidebarExpanded] = React.useState(false);
     const [darkMode, setDarkMode] = React.useState(false);
+    const [expenses, setExpenses] = React.useState<Array<ExpenseResponse>>([]);
 
     const { defaultAlgorithm, darkAlgorithm } = theme;
 
@@ -59,7 +62,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                         setExpanded: setSidebarExpanded,
                     }}
                 >
-                    <Component {...pageProps} />
+                    <ExpensesContext.Provider
+                        value={{
+                            expenses: expenses,
+                            setExpenses: setExpenses
+                        }}
+                    >
+                        <Component {...pageProps} />
+                    </ExpensesContext.Provider>
                 </SidebarContext.Provider>
             </ThemeContext.Provider>
         </ConfigProvider>
