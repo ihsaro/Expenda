@@ -12,13 +12,9 @@ const Expenses: React.FC = () => {
     const [isUpsertExpenseModalOpen, setIsUpsertExpenseModalOpen] =
         React.useState<boolean>(false);
 
-    const [refreshCounter, setRefreshCounter] = React.useState<number>(0);
-
     const openUpsertExpenseModal = () => setIsUpsertExpenseModalOpen(true);
 
     const closeUpsertExpenseModal = () => setIsUpsertExpenseModalOpen(false);
-
-    const handleUpsertSuccess = () => setRefreshCounter(refreshCounter + 1);
 
     return (
         <Layout className="fixed top-0 left-0 h-screen w-full">
@@ -47,11 +43,10 @@ const Expenses: React.FC = () => {
                     </Row>
                 </Header>
                 <Content className="pl-12 pt-5 pr-12">
-                    <UserExpenses refreshCounter={refreshCounter} selectable />
+                    <UserExpenses selectable />
                     {isUpsertExpenseModalOpen && (
                         <UpsertExpense
                             onCloseUpsertExpenseModal={closeUpsertExpenseModal}
-                            onSuccess={handleUpsertSuccess}
                             type="ADD"
                             visible={isUpsertExpenseModalOpen}
                         />

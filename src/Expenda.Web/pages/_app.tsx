@@ -65,7 +65,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     <ExpensesContext.Provider
                         value={{
                             expenses: expenses,
-                            setExpenses: setExpenses
+                            setExpenses: setExpenses,
                         }}
                     >
                         <Component {...pageProps} />

@@ -14,6 +14,7 @@ import { ExpenseResponse } from "models/ExpenseResponse";
 import { TransactionResult } from "models/TransactionResult";
 import { ExpenseRequest } from "models/ExpenseRequest";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { useExpensesContext } from "contexts/ExpensesContext";
 
 interface Props {
     id?: number;
@@ -21,7 +22,6 @@ interface Props {
     visible?: boolean;
 
     onCloseUpsertExpenseModal(): void;
-    onSuccess(): void;
 }
 
 const UpsertExpense: React.FC<Props> = (props) => {
@@ -35,6 +35,9 @@ const UpsertExpense: React.FC<Props> = (props) => {
         quantity: 0,
         transaction_date: new Date(),
     });
+
+    const { expenses, setExpenses } = useExpensesContext();
+    
     const [form] = Form.useForm();
 
     React.useEffect(() => {
@@ -70,7 +73,9 @@ const UpsertExpense: React.FC<Props> = (props) => {
 
         if (response.status === 201) {
             props.onCloseUpsertExpenseModal();
-            props.onSuccess();
+
+            let createdExpense: ExpenseResponse = await response.json();
+            setExpenses([ ...expenses, createdExpense ]);
         }
     };
 
