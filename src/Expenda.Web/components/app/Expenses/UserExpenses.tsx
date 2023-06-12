@@ -7,6 +7,8 @@ import * as React from "react";
 
 interface Props {
     selectable?: boolean;
+
+    rowSelectionHandler?(selectedRows: ExpenseResponse[]): void;
 }
 
 const UserExpenses: React.FC<Props> = (props) => {
@@ -74,6 +76,7 @@ const UserExpenses: React.FC<Props> = (props) => {
                                   "selectedRows: ",
                                   selectedRows
                               );
+                              props.rowSelectionHandler(selectedRows);
                           },
                       }
                     : null

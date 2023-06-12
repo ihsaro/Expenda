@@ -37,7 +37,7 @@ const UpsertExpense: React.FC<Props> = (props) => {
     });
 
     const { expenses, setExpenses } = useExpensesContext();
-    
+
     const [form] = Form.useForm();
 
     React.useEffect(() => {
@@ -75,7 +75,7 @@ const UpsertExpense: React.FC<Props> = (props) => {
             props.onCloseUpsertExpenseModal();
 
             let createdExpense: ExpenseResponse = await response.json();
-            setExpenses([ ...expenses, createdExpense ]);
+            setExpenses([...expenses, createdExpense]);
         }
     };
 
