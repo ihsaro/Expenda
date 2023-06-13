@@ -14,7 +14,9 @@ const Expenses: React.FC = () => {
     const [isUpsertExpenseModalOpen, setIsUpsertExpenseModalOpen] =
         React.useState<boolean>(false);
 
-    const [selectedExpenses, setSelectedExpenses] = React.useState<Array<ExpenseResponse>>([]);
+    const [selectedExpenses, setSelectedExpenses] = React.useState<
+        Array<ExpenseResponse>
+    >([]);
 
     const { expenses, setExpenses } = useExpensesContext();
 
@@ -22,18 +24,21 @@ const Expenses: React.FC = () => {
 
     const closeUpsertExpenseModal = () => setIsUpsertExpenseModalOpen(false);
 
-    const handleRowSelection = (expenses: Array<ExpenseResponse>) => setSelectedExpenses(expenses);
+    const handleRowSelection = (expenses: Array<ExpenseResponse>) =>
+        setSelectedExpenses(expenses);
 
     const onDeleteClickHandler = async () => {
         if (selectedExpenses.length === 1) {
             const id = selectedExpenses[0].id;
             let response = await fetch(`/api/expenses/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
             });
 
             switch (response.status) {
                 case 204:
-                    setExpenses(expenses.filter(expense => expense.id === id));
+                    setExpenses(
+                        expenses.filter((expense) => expense.id !== id)
+                    );
                     break;
                 case 404:
                     break;
@@ -42,11 +47,9 @@ const Expenses: React.FC = () => {
                 default:
                     break;
             }
+        } else {
         }
-        else {
-
-        }
-    }
+    };
 
     return (
         <Layout className="fixed top-0 left-0 h-screen w-full">
@@ -77,7 +80,10 @@ const Expenses: React.FC = () => {
                     </Row>
                 </Header>
                 <Content className="pl-12 pt-5 pr-12">
-                    <UserExpenses selectable rowSelectionHandler={handleRowSelection} />
+                    <UserExpenses
+                        selectable
+                        rowSelectionHandler={handleRowSelection}
+                    />
                     {isUpsertExpenseModalOpen && (
                         <UpsertExpense
                             onCloseUpsertExpenseModal={closeUpsertExpenseModal}

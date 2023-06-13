@@ -22,8 +22,7 @@ export default async (
 
         if (response.status === 204) {
             res.end();
-        }
-        else if (response.status === 404) {
+        } else if (response.status === 404) {
             const data: TransactionResult<boolean> = await response.json();
             res.json(data);
         }
