@@ -14,6 +14,7 @@ class ExpendaMain extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
+        fontFamily: 'Montserrat',
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
