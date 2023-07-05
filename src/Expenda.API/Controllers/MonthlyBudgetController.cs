@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Expenda.API.Controllers;
 
 [ApiController]
-[Route("api/v1")]
+[Route("api/v1/monthly-budgets")]
 public class MonthlyBudgetController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,23 +16,25 @@ public class MonthlyBudgetController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("monthly-budgets")]
-    public IActionResult ListMonthlyBudgets(ListMonthlyBudgetsQuery query, CancellationToken token = default)
+    [HttpGet("")]
+    public async Task<IActionResult> ListMonthlyBudgets(ListMonthlyBudgetsQuery query, CancellationToken token = default)
     {
-        return Ok(_mediator.Send(query, token));
+        return Ok(await _mediator.Send(query, token));
     }
 
     [HttpPost]
     [HttpPut]
-    [Route("monthly-budget")]
-    public IActionResult SetMonthlyBudget(SetMonthlyBudgetCommand command, CancellationToken token = default)
+    [Route("")]
+    public async Task<IActionResult> SetMonthlyBudget(SetMonthlyBudgetCommand command, CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        var result = await _mediator.Send(command, token);
+        return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpGet("monthly-budget/{year}")]
-    public IActionResult GetMonthlyBudget([FromRoute] int year, CancellationToken token = default)
+    [HttpGet("{year}/{month}")]
+    public async Task<IActionResult> GetMonthlyBudget([FromRoute] int year, [FromRoute] int month, CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        var result = await _mediator.Send(new RetrieveMonthlyBudgetQuery { Year = year, Month = month }, token);
+        return result is { Success: true, ResultObject: not null } ? Ok(result.ResultObject) : NotFound(result.ErrorMessages);
     }
 }

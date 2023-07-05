@@ -39,7 +39,7 @@ public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCo
 
     public async Task<TransactionResult<MonthlyBudgetResponse>> Handle(SetMonthlyBudgetCommand command, CancellationToken token)
     {
-        var entity = await _repository.GetByMonthAndYear(command.Month, command.Year, token);
+        var entity = await _repository.GetForUserByMonthAndYear(_session.CurrentUser.Id, command.Month, command.Year, token);
 
         if (entity is not null && entity.Owner.Id != _session.CurrentUser.Id)
         {

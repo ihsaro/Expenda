@@ -21,4 +21,7 @@
     <data name="MONTHLY_BUDGET_DOES_NOT_BELONG_TO_USER" xml:space="preserve">
         <value>Monthly budget does not belong to user.</value>
     </data>
+    <data name="MONTHLY_BUDGET_DOES_NOT_EXIST" xml:space="preserve">
+        <value>Monthly budget does not belong to user.</value>
+    </data>
 </root>
