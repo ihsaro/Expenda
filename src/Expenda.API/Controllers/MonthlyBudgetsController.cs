@@ -7,11 +7,11 @@ namespace Expenda.API.Controllers;
 
 [ApiController]
 [Route("api/v1/monthly-budgets")]
-public class MonthlyBudgetController : ControllerBase
+public class MonthlyBudgetsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public MonthlyBudgetController(IMediator mediator)
+    public MonthlyBudgetsController(IMediator mediator)
     {
         _mediator = mediator;
     }
