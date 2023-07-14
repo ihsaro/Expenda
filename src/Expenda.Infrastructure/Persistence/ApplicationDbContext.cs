@@ -13,7 +13,7 @@ internal class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applica
     {
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken token = default)
     {
         var entries = ChangeTracker
                         .Entries()
@@ -29,6 +29,6 @@ internal class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applica
             }
         }
 
-        return await base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(token);
     }
 }

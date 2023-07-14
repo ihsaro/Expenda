@@ -14,11 +14,11 @@ internal class MonthlyBudgetRepository : GenericRepository<MonthlyBudget>, IMont
     {
         return await Table
             .Include(x => x.Owner)
-            .FirstOrDefaultAsync(x => x.Owner.Id == id && x.Month == month && x.Year == year, cancellationToken: token);
+            .FirstOrDefaultAsync(x => x.Owner.Id == id && x.Month == month && x.Year == year, token);
     }
 
     public async Task<IEnumerable<MonthlyBudget>> ListForUser(int id, CancellationToken token)
     {
-        return await Table.Where(x => x.Owner.Id == id).ToListAsync(cancellationToken: token);
+        return await Table.Where(x => x.Owner.Id == id).ToListAsync(token);
     }
 }

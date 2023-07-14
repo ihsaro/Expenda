@@ -14,7 +14,7 @@ internal class ExpenseRepository : GenericRepository<Expense>, IExpenseRepositor
     {
         return await Table
             .Where(x => x.Owner.Id == userId)
-            .ToListAsync(cancellationToken: token);
+            .ToListAsync(token);
     }
 
     public async Task<IEnumerable<Expense>> GetExpensesByIds(IEnumerable<int> ids, CancellationToken token = default)
@@ -22,6 +22,6 @@ internal class ExpenseRepository : GenericRepository<Expense>, IExpenseRepositor
         return await Table
             .Where(x => ids.Contains(x.Id))
             .Include(x => x.Owner)
-            .ToListAsync(cancellationToken: token);
+            .ToListAsync(token);
     }
 }

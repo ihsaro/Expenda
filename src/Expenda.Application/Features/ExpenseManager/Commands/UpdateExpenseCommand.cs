@@ -4,6 +4,7 @@ using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
 using Expenda.Application.Features.ExpenseManager.Models.Response;
+using Expenda.Domain.Entities;
 using Expenda.Domain.Repositories;
 using MediatR;
 
@@ -40,7 +41,8 @@ public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand,
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
         }
 
-        // TO BE DONE
+        entity = _mapper.Map<Expense>(command);
+        _repository.Update(entity);
 
         await _repository.Commit(token);
 

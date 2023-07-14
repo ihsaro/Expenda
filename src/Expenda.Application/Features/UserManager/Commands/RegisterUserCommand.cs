@@ -54,7 +54,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
         _messenger = messenger;
     }
 
-    public async Task<TransactionResult<RegisterUserCommandResponse>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<TransactionResult<RegisterUserCommandResponse>> Handle(RegisterUserCommand request, CancellationToken token)
     {
         if (await _userManager.DoesUserExist(request.Username, request.EmailAddress))
         {

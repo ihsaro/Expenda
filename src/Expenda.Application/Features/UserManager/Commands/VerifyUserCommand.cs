@@ -33,7 +33,7 @@ public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, Trans
         _messenger = messenger;
     }
 
-    public async Task<TransactionResult<VerifyUserCommandResponse>> Handle(VerifyUserCommand request, CancellationToken cancellationToken)
+    public async Task<TransactionResult<VerifyUserCommandResponse>> Handle(VerifyUserCommand request, CancellationToken token)
     {
         var user = await _userManager.FindByUsernameAsync(request.Username);
 

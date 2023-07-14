@@ -29,7 +29,7 @@ public class ListMonthlyTotalExpensesQueryHandler : IRequestHandler<ListMonthlyT
         _messenger = messenger;
     }
 
-    public Task<TransactionResult<ListMonthlyTotalExpensesQueryResponse>> Handle(ListMonthlyTotalExpensesQuery request, CancellationToken cancellationToken)
+    public Task<TransactionResult<ListMonthlyTotalExpensesQueryResponse>> Handle(ListMonthlyTotalExpensesQuery request, CancellationToken token)
     {
         throw new NotImplementedException();
     }
