@@ -70,7 +70,7 @@ public class CreateExpenseCommandHandler : IRequestHandler<CreateExpenseCommand,
         var entity = _mapper.Map<Expense>(command, opt => opt.Items["Owner"] = _session.CurrentUser);
         
         _repository.Create(entity);
-        await _repository.Commit(token);
+        await _repository.CommitAsync(token);
 
         return new TransactionResult<ExpenseResponse>(_mapper.Map<ExpenseResponse>(entity));
     }

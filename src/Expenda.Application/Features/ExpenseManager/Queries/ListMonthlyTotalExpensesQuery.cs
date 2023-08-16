@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;

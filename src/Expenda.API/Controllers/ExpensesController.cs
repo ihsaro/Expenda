@@ -54,9 +54,10 @@ public class ExpensesController : ControllerBase
     }
 
     [HttpDelete("")]
-    public Task<IActionResult> DeleteExpenses([FromBody] IEnumerable<int> ids, CancellationToken token = default)
+    public async Task<IActionResult> DeleteExpenses([FromBody] IEnumerable<int> ids, CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        var result = await _mediator.Send(new DeleteExpensesCommand { Ids = ids }, token);
+        return result is { Success: true, ResultObject: true } ? NoContent() : NotFound(result.ErrorMessages);
     }
 
     [HttpGet("monthly-total")]

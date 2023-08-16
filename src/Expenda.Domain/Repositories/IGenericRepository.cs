@@ -42,7 +42,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     /// <param name="skip">Number of entities to be skipped (Default: 0)</param>
     /// <param name="token">Cancellation token</param>
     /// <returns>IEnumerable of entities of type T</returns>
-    Task<IEnumerable<T>> GetAll(int take = 1000, int skip = 0, CancellationToken token = default);
+    Task<IEnumerable<T>> GetAllAsync(int take = 1000, int skip = 0, CancellationToken token = default);
 
     /// <summary>
     /// Gets 1 entity of generic type T based on an id, while not loading the related entities within,
@@ -51,12 +51,12 @@ public interface IGenericRepository<T> where T : BaseEntity
     /// <param name="id">Id of the entity to be fetched</param>
     /// <param name="token">Cancellation token</param>
     /// <returns>Entity of type T</returns>
-    Task<T?> GetById(int id, CancellationToken token = default);
+    Task<T?> GetByIdAsync(int id, CancellationToken token = default);
 
     /// <summary>
     /// Commits every transaction from the context to the database.
     /// </summary>
     /// <param name="token">Cancellation token</param>
     /// <returns>Number of records affected</returns>
-    Task<int> Commit(CancellationToken token = default);
+    Task<int> CommitAsync(CancellationToken token = default);
 }

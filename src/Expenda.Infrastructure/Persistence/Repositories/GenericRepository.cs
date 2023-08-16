@@ -58,7 +58,7 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// <param name="skip">Number of entities to be skipped (Default: 0)</param>
     /// <param name="token">Cancellation token</param>
     /// <returns>IEnumerable of entities of type T</returns>
-    public virtual async Task<IEnumerable<T>> GetAll(int take = 1000, int skip = 0, CancellationToken token = default)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(int take = 1000, int skip = 0, CancellationToken token = default)
         => await Table.Skip(skip).Take(take).ToListAsync(token);
 
     /// <summary>
@@ -68,7 +68,7 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// <param name="id">Id of the entity to be fetched</param>
     /// <param name="token">Cancellation token</param>
     /// <returns>Entity of type T</returns>
-    public virtual async Task<T?> GetById(int id, CancellationToken token = default)
+    public virtual async Task<T?> GetByIdAsync(int id, CancellationToken token = default)
         => await Table.FirstOrDefaultAsync(x => x.Id == id, token);
 
     /// <summary>
@@ -76,6 +76,6 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="token">Cancellation token</param>
     /// <returns>Number of records affected</returns>
-    public virtual async Task<int> Commit(CancellationToken token = default)
+    public virtual async Task<int> CommitAsync(CancellationToken token = default)
         => await _context.SaveChangesAsync(token);
 }

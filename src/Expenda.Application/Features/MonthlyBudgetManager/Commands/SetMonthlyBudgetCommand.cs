@@ -52,7 +52,7 @@ public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCo
         else
             entity.Budget = command.Budget;
 
-        await _repository.Commit(token);
+        await _repository.CommitAsync(token);
         return new TransactionResult<MonthlyBudgetResponse>(_mapper.Map<MonthlyBudgetResponse>(entity));
     }
 }

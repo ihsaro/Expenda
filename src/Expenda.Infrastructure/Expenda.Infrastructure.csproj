@@ -6,17 +6,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Localization\ExpenseMessenger.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExpenseMessenger.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\MonthlyBudgetMessenger.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MonthlyBudgetMessenger.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.16" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.16" />

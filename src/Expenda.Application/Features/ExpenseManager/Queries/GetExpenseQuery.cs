@@ -32,7 +32,7 @@ public class GetExpenseQueryHandler : IRequestHandler<GetExpenseQuery, Transacti
 
     public async Task<TransactionResult<ExpenseResponse>> Handle(GetExpenseQuery query, CancellationToken token)
     {
-        var entity = await _repository.GetById(query.Id, token);
+        var entity = await _repository.GetByIdAsync(query.Id, token);
 
         if (entity is null || entity.Owner.Id != _session.CurrentUser.Id)
         {

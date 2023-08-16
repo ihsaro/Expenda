@@ -33,7 +33,7 @@ public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand,
 
     public async Task<TransactionResult<ExpenseResponse>> Handle(UpdateExpenseCommand command, CancellationToken token)
     {
-        var entity = await _repository.GetById(command.Id, token);
+        var entity = await _repository.GetByIdAsync(command.Id, token);
 
         if (entity is null || entity.Owner.Id != _session.CurrentUser.Id)
         {
@@ -44,7 +44,7 @@ public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand,
         entity = _mapper.Map<Expense>(command);
         _repository.Update(entity);
 
-        await _repository.Commit(token);
+        await _repository.CommitAsync(token);
 
         return new TransactionResult<ExpenseResponse>(_mapper.Map<ExpenseResponse>(entity));
     }

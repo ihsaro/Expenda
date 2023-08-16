@@ -1,4 +1,3 @@
-using AutoMapper;
 using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
@@ -15,14 +14,12 @@ public class DeleteExpensesCommand : IRequest<TransactionResult<bool>>
 public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesCommand, TransactionResult<bool>>
 {
     private readonly IExpenseRepository _repository;
-    private readonly IMapper _mapper;
     private readonly IApplicationSessionManager _session;
     private readonly IExpenseMessenger _messenger;
 
-    public DeleteExpensesCommandHandler(IExpenseRepository repository, IMapper mapper, IApplicationSessionManager session, IExpenseMessenger messenger)
+    public DeleteExpensesCommandHandler(IExpenseRepository repository, IApplicationSessionManager session, IExpenseMessenger messenger)
     {
         _repository = repository;
-        _mapper = mapper;
         _session = session;
         _messenger = messenger;
     }
@@ -34,11 +31,11 @@ public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesComman
 
         if (entities.Any(x => x.Owner.Id != _session.CurrentUser.Id))
         {
-            return new TransactionResult<bool>(false).AddErrorMessage(new ErrorMessage(_messenger.GetMessage("")));
+            return new TransactionResult<bool>(false).AddErrorMessage(new ErrorMessage(_messenger.GetMessage("ONE_OR_MORE_EXPENSES_DO_NOT_EXIST")));
         }
         
         _repository.BatchDelete(entities);
-        await _repository.Commit(token);
+        await _repository.CommitAsync(token);
 
         return new TransactionResult<bool>(true);
     }

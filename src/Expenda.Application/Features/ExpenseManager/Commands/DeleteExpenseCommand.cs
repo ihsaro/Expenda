@@ -26,7 +26,7 @@ public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand,
 
     public async Task<TransactionResult<bool>> Handle(DeleteExpenseCommand command, CancellationToken token)
     {
-        var entity = await _repository.GetById(command.Id, token);
+        var entity = await _repository.GetByIdAsync(command.Id, token);
 
         if (entity is null || entity.Owner.Id != _session.CurrentUser.Id)
         {
@@ -36,7 +36,7 @@ public class DeleteExpenseCommandHandler : IRequestHandler<DeleteExpenseCommand,
 
         _repository.Delete(entity);
         
-        var operation = await _repository.Commit(token);
+        var operation = await _repository.CommitAsync(token);
 
         return new TransactionResult<bool>(operation == 1);
     }
