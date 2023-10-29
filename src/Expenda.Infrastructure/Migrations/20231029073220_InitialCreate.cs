@@ -6,10 +6,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Expenda.Infrastructure.Migrations
 {
-    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -171,10 +169,12 @@ namespace Expenda.Infrastructure.Migrations
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     Price = table.Column<double>(type: "double precision", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
-                    TransactionDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ApplicationUser = table.Column<int>(type: "integer", nullable: false),
                     CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedById = table.Column<int>(type: "integer", nullable: false),
+                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,6 +182,18 @@ namespace Expenda.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Expenses_AspNetUsers_ApplicationUser",
                         column: x => x.ApplicationUser,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Expenses_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Expenses_AspNetUsers_LastUpdatedById",
+                        column: x => x.LastUpdatedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -198,7 +210,9 @@ namespace Expenda.Infrastructure.Migrations
                     Budget = table.Column<double>(type: "double precision", nullable: false),
                     ApplicationUser = table.Column<int>(type: "integer", nullable: false),
                     CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedById = table.Column<int>(type: "integer", nullable: false),
+                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,6 +220,18 @@ namespace Expenda.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_MonthlyBudgets_AspNetUsers_ApplicationUser",
                         column: x => x.ApplicationUser,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MonthlyBudgets_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MonthlyBudgets_AspNetUsers_LastUpdatedById",
+                        column: x => x.LastUpdatedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -254,12 +280,31 @@ namespace Expenda.Infrastructure.Migrations
                 column: "ApplicationUser");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Expenses_CreatedById",
+                table: "Expenses",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expenses_LastUpdatedById",
+                table: "Expenses",
+                column: "LastUpdatedById");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MonthlyBudgets_ApplicationUser",
                 table: "MonthlyBudgets",
                 column: "ApplicationUser");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MonthlyBudgets_CreatedById",
+                table: "MonthlyBudgets",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MonthlyBudgets_LastUpdatedById",
+                table: "MonthlyBudgets",
+                column: "LastUpdatedById");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

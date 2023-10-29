@@ -27,7 +27,6 @@ public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesComman
     public async Task<TransactionResult<bool>> Handle(DeleteExpensesCommand command, CancellationToken token)
     {
         var entities = await _repository.GetExpensesByIds(command.Ids, token);
-        entities = entities.ToList();
 
         if (entities.Any(x => x.Owner.Id != _session.CurrentUser.Id))
         {

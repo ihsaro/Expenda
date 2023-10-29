@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Expenda.Domain.Entities.Base;
 
 namespace Expenda.Domain.Entities;
 
-public class Expense : BaseEntity
+public class Expense : AuditableBaseEntity
 {
     [Required]
     [MinLength(1)]

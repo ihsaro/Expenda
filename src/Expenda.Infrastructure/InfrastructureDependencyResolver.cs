@@ -41,6 +41,7 @@ public static class InfrastructureDependencyResolver
             .AddTransient<IApplicationTokenManager, ApplicationTokenManager>();
 
         services
+            .AddScoped(typeof(IRepository<>), typeof(Repository<>))
             .AddScoped<IExpenseRepository, ExpenseRepository>()
             .AddScoped<IMonthlyBudgetRepository, MonthlyBudgetRepository>()
             .AddScoped<IUserDataRepository, UserDataRepository>();

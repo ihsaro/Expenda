@@ -1,17 +1,20 @@
-﻿using Expenda.Domain.Entities;
+﻿using Expenda.Application.Architecture.Security;
+using Expenda.Domain.Entities.Base;
 using Expenda.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Expenda.Infrastructure.Persistence.Repositories;
 
-internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+internal class Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly ApplicationDbContext _context;
+    private readonly IApplicationSessionManager _session;
     protected readonly DbSet<T> Table;
 
-    protected GenericRepository(ApplicationDbContext context)
+    protected Repository(ApplicationDbContext context, IApplicationSessionManager session)
     {
         _context = context;
+        _session = session;
         Table = _context.Set<T>();
     }
 
@@ -20,14 +23,30 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="entities">Entities to be created</param>
     public virtual void BatchCreate(IEnumerable<T> entities)
-        => Table.AddRange(entities);
+    {
+        foreach (var entity in entities.OfType<AuditableBaseEntity>())
+        {
+            entity.CreatedBy = _session.CurrentUser;
+            entity.LastUpdatedBy = _session.CurrentUser;
+        }
+
+        Table.AddRange(entities);
+    }
 
     /// <summary>
     /// Creates entity of generic type T into the repository context
     /// </summary>
     /// <param name="entity">Entity to be created</param>
     public virtual void Create(T entity)
-        => Table.Add(entity);
+    {
+        if (entity is AuditableBaseEntity aEntity)
+        {
+            aEntity.CreatedBy = _session.CurrentUser;
+            aEntity.LastUpdatedBy = _session.CurrentUser;
+        }
+
+        Table.Add(entity);
+    }
 
     /// <summary>
     /// Deletes entity of generic type T from the repository context
@@ -48,7 +67,14 @@ internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="entity">Entity to be updated</param>
     public virtual void Update(T entity)
-        => Table.Update(entity);
+    {
+        if (entity is AuditableBaseEntity aEntity)
+        {
+            aEntity.LastUpdatedBy = _session.CurrentUser;
+        }
+
+        Table.Update(entity);
+    }
 
     /// <summary>
     /// Gets all entities of generic type T, while not loading the related entities within,

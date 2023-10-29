@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Expenda.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Expenda.Domain.Entities.Base;
 
 namespace Expenda.Infrastructure.Persistence;
 
@@ -17,15 +18,15 @@ internal class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applica
     {
         var entries = ChangeTracker
                         .Entries()
-                        .Where(e => e is { Entity: BaseEntity, State: EntityState.Added or EntityState.Modified });
+                        .Where(e => e is { Entity: AuditableBaseEntity, State: EntityState.Added or EntityState.Modified });
 
         foreach (var entry in entries)
         {
-            ((BaseEntity)entry.Entity).LastUpdatedTimestamp = DateTime.UtcNow;
+            ((AuditableBaseEntity)entry.Entity).LastUpdatedTimestamp = DateTime.UtcNow;
 
             if (entry.State == EntityState.Added)
             {
-                ((BaseEntity)entry.Entity).CreatedTimestamp = DateTime.UtcNow;
+                ((AuditableBaseEntity)entry.Entity).CreatedTimestamp = DateTime.UtcNow;
             }
         }
 

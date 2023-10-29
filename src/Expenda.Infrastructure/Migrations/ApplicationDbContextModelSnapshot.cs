@@ -17,7 +17,7 @@ namespace Expenda.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -139,12 +139,18 @@ namespace Expenda.Infrastructure.Migrations
                     b.Property<int>("ApplicationUser")
                         .HasColumnType("integer");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedTimestamp")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("LastUpdatedById")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastUpdatedTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -160,12 +166,16 @@ namespace Expenda.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly>("TransactionDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUser");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("LastUpdatedById");
 
                     b.ToTable("Expenses");
                 });
@@ -184,8 +194,14 @@ namespace Expenda.Infrastructure.Migrations
                     b.Property<double>("Budget")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedTimestamp")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LastUpdatedById")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastUpdatedTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -199,6 +215,10 @@ namespace Expenda.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUser");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("LastUpdatedById");
 
                     b.ToTable("MonthlyBudgets");
                 });
@@ -314,6 +334,22 @@ namespace Expenda.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Expenda.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Expenda.Domain.Entities.ApplicationUser", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("LastUpdatedBy");
+
                     b.Navigation("Owner");
                 });
 
@@ -324,6 +360,22 @@ namespace Expenda.Infrastructure.Migrations
                         .HasForeignKey("ApplicationUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Expenda.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Expenda.Domain.Entities.ApplicationUser", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("LastUpdatedBy");
 
                     b.Navigation("Owner");
                 });

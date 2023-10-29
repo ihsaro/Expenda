@@ -1,8 +1,8 @@
-﻿using Expenda.Domain.Entities;
+﻿using Expenda.Domain.Entities.Base;
 
 namespace Expenda.Domain.Repositories;
 
-public interface IGenericRepository<T> where T : BaseEntity
+public interface IRepository<T> where T : BaseEntity
 {
     /// <summary>
     /// Creates entities of generic type T into the repository context

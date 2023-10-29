@@ -1,12 +1,13 @@
+using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Entities;
 using Expenda.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Expenda.Infrastructure.Persistence.Repositories;
 
-internal class MonthlyBudgetRepository : GenericRepository<MonthlyBudget>, IMonthlyBudgetRepository
+internal class MonthlyBudgetRepository : Repository<MonthlyBudget>, IMonthlyBudgetRepository
 {
-    public MonthlyBudgetRepository(ApplicationDbContext context) : base(context)
+    public MonthlyBudgetRepository(ApplicationDbContext context, IApplicationSessionManager session) : base(context, session)
     {
     }
 
