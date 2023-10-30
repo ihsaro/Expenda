@@ -2,15 +2,46 @@ import * as React from "react";
 
 import { Button, Col, Form, Input, Row } from "antd";
 
+type FormFields = {
+    firstName: string;
+    lastName: string;
+    username: string;
+    emailAddress: string;
+    password: string;
+    confirmPassword: string;
+};
+
 const Register: React.FC = () => {
     const [form] = Form.useForm();
+
+    const [errors, setErrors] = React.useState<Array<string>>([]);
+
+    const onFinish = async (values: FormFields) => {
+        let response = await fetch("/api/login", {
+            method: "POST",
+            body: JSON.stringify({
+                username: values.username,
+                password: values.password,
+            }),
+        });
+
+        setErrors(response.status === 401 ? ["Invalid credentials"] : []);
+
+        if (response.status === 200) {
+            window.location.reload();
+        } else if (response.status === 401) {
+            setErrors(["Invalid credentials"]);
+        } else {
+            setErrors(["Unknown error, please try again!"]);
+        }
+    };
 
     return (
         <Form
             layout="vertical"
             form={form}
             initialValues={{ layout: "vertical" }}
-            onValuesChange={(e) => {}}
+            onValuesChange={(e) => { }}
         >
             <Row gutter={16}>
                 <Col span={12}>
@@ -91,7 +122,7 @@ const Register: React.FC = () => {
                 <Input.Password placeholder="Confirm password" />
             </Form.Item>
             <Form.Item>
-                <Button type="primary">Register</Button>
+                <Button type="primary" htmlType="submit">Register</Button>
             </Form.Item>
         </Form>
     );
