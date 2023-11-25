@@ -34,7 +34,7 @@ public class GetUserDataMetricsQueryHandler : IRequestHandler<GetUserDataMetrics
 
     public async Task<TransactionResult<GetUserDataMetricsResponse>> Handle(GetUserDataMetricsQuery request, CancellationToken token)
     {
-        var metrics = await _repository.GetUserDataMetrics(_session.CurrentUser.Id, token);
+        var metrics = await _repository.GetUserDataMetrics(_session.CurrentUserId, token);
         return new TransactionResult<GetUserDataMetricsResponse>(_mapper.Map<GetUserDataMetricsResponse>(metrics));
     }
 }

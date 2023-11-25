@@ -9,6 +9,7 @@ using Expenda.Domain.Entities;
 using Expenda.Infrastructure.Security;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Infrastructure.Localization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Expenda.Infrastructure;
 
@@ -32,8 +33,8 @@ public static class InfrastructureDependencyResolver
             .AddTransient<IMonthlyBudgetMessenger, MonthlyBudgetMessenger>();
 
         services
-            .AddIdentityCore<ApplicationUser>()
-            .AddRoles<ApplicationRole>()
+            .AddIdentityCore<IdentityUser<int>>()
+            .AddRoles<IdentityRole<int>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services
@@ -42,6 +43,8 @@ public static class InfrastructureDependencyResolver
 
         services
             .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+            .AddScoped<IApplicationGuestUserRepository, ApplicationGuestUserRepository>()
+            .AddScoped<IApplicationUserRepository, ApplicationUserRepository>()
             .AddScoped<IExpenseRepository, ExpenseRepository>()
             .AddScoped<IMonthlyBudgetRepository, MonthlyBudgetRepository>()
             .AddScoped<IUserDataRepository, UserDataRepository>();

@@ -6,10 +6,32 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Expenda.Infrastructure.Migrations
 {
+    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicationUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    EmailAddress = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Username = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedById = table.Column<int>(type: "integer", nullable: false),
+                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUsers", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -31,8 +53,6 @@ namespace Expenda.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -51,6 +71,48 @@ namespace Expenda.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    OwnerId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedById = table.Column<int>(type: "integer", nullable: false),
+                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MonthlyBudgets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Month = table.Column<int>(type: "integer", nullable: false),
+                    Year = table.Column<int>(type: "integer", nullable: false),
+                    Budget = table.Column<double>(type: "double precision", nullable: false),
+                    OwnerId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedById = table.Column<int>(type: "integer", nullable: false),
+                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MonthlyBudgets", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,84 +221,6 @@ namespace Expenda.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Expenses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    TransactionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ApplicationUser = table.Column<int>(type: "integer", nullable: false),
-                    CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedById = table.Column<int>(type: "integer", nullable: false),
-                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Expenses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Expenses_AspNetUsers_ApplicationUser",
-                        column: x => x.ApplicationUser,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Expenses_AspNetUsers_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Expenses_AspNetUsers_LastUpdatedById",
-                        column: x => x.LastUpdatedById,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MonthlyBudgets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Month = table.Column<int>(type: "integer", nullable: false),
-                    Year = table.Column<int>(type: "integer", nullable: false),
-                    Budget = table.Column<double>(type: "double precision", nullable: false),
-                    ApplicationUser = table.Column<int>(type: "integer", nullable: false),
-                    CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedById = table.Column<int>(type: "integer", nullable: false),
-                    LastUpdatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastUpdatedById = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MonthlyBudgets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MonthlyBudgets_AspNetUsers_ApplicationUser",
-                        column: x => x.ApplicationUser,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MonthlyBudgets_AspNetUsers_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MonthlyBudgets_AspNetUsers_LastUpdatedById",
-                        column: x => x.LastUpdatedById,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -273,40 +257,14 @@ namespace Expenda.Infrastructure.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Expenses_ApplicationUser",
-                table: "Expenses",
-                column: "ApplicationUser");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Expenses_CreatedById",
-                table: "Expenses",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Expenses_LastUpdatedById",
-                table: "Expenses",
-                column: "LastUpdatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MonthlyBudgets_ApplicationUser",
-                table: "MonthlyBudgets",
-                column: "ApplicationUser");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MonthlyBudgets_CreatedById",
-                table: "MonthlyBudgets",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MonthlyBudgets_LastUpdatedById",
-                table: "MonthlyBudgets",
-                column: "LastUpdatedById");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationUsers");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

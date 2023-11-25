@@ -4,5 +4,5 @@ namespace Expenda.Application.Architecture.Security;
 
 public interface IApplicationSessionManager
 {
-    ApplicationUser CurrentUser { get; }
+    int CurrentUserId { get; }
 }

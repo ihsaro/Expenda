@@ -28,7 +28,7 @@ public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesComman
     {
         var entities = await _repository.GetExpensesByIds(command.Ids, token);
 
-        if (entities.Any(x => x.Owner.Id != _session.CurrentUser.Id))
+        if (entities.Any(x => x.OwnerId != _session.CurrentUserId))
         {
             return new TransactionResult<bool>(false).AddErrorMessage(new ErrorMessage(_messenger.GetMessage("ONE_OR_MORE_EXPENSES_DO_NOT_EXIST")));
         }

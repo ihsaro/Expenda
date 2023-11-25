@@ -39,16 +39,16 @@ public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCo
 
     public async Task<TransactionResult<MonthlyBudgetResponse>> Handle(SetMonthlyBudgetCommand command, CancellationToken token)
     {
-        var entity = await _repository.GetForUserByMonthAndYear(_session.CurrentUser.Id, command.Month, command.Year, token);
+        var entity = await _repository.GetForUserByMonthAndYear(_session.CurrentUserId, command.Month, command.Year, token);
 
-        if (entity is not null && entity.Owner.Id != _session.CurrentUser.Id)
+        if (entity is not null && entity.OwnerId != _session.CurrentUserId)
         {
             return new TransactionResult<MonthlyBudgetResponse>()
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("MONTHLY_BUDGET_DOES_NOT_BELONG_TO_USER")));
         }
 
         if (entity is null)
-            _repository.Create(_mapper.Map<MonthlyBudget>(entity, opt => opt.Items["Owner"] = _session.CurrentUser));
+            _repository.Create(_mapper.Map<MonthlyBudget>(entity, opt => opt.Items["OwnerId"] = _session.CurrentUserId));
         else
             entity.Budget = command.Budget;
 

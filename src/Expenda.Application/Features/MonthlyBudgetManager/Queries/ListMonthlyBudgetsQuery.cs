@@ -24,7 +24,7 @@ public class ListMonthlyBudgetsQueryHandler : IRequestHandler<ListMonthlyBudgets
 
     public async Task<TransactionResult<IEnumerable<MonthlyBudgetResponse>>> Handle(ListMonthlyBudgetsQuery request, CancellationToken token)
     {
-        var entities = await _repository.ListForUser(_session.CurrentUser.Id, token);
+        var entities = await _repository.ListForUser(_session.CurrentUserId, token);
         return new TransactionResult<IEnumerable<MonthlyBudgetResponse>>(_mapper.Map<IEnumerable<MonthlyBudgetResponse>>(entities));
     }
 }

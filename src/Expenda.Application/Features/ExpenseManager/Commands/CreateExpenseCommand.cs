@@ -67,7 +67,7 @@ public class CreateExpenseCommandHandler : IRequestHandler<CreateExpenseCommand,
 
     public async Task<TransactionResult<ExpenseResponse>> Handle(CreateExpenseCommand command, CancellationToken token)
     {
-        var entity = _mapper.Map<Expense>(command, opt => opt.Items["Owner"] = _session.CurrentUser);
+        var entity = _mapper.Map<Expense>(command, opt => opt.Items["OwnerId"] = _session.CurrentUserId);
         
         _repository.Create(entity);
         await _repository.CommitAsync(token);

@@ -26,8 +26,8 @@ internal class Repository<T> : IRepository<T> where T : BaseEntity
     {
         foreach (var entity in entities.OfType<AuditableBaseEntity>())
         {
-            entity.CreatedBy = _session.CurrentUser;
-            entity.LastUpdatedBy = _session.CurrentUser;
+            entity.CreatedById = _session.CurrentUserId;
+            entity.LastUpdatedById = _session.CurrentUserId;
         }
 
         Table.AddRange(entities);
@@ -41,8 +41,8 @@ internal class Repository<T> : IRepository<T> where T : BaseEntity
     {
         if (entity is AuditableBaseEntity aEntity)
         {
-            aEntity.CreatedBy = _session.CurrentUser;
-            aEntity.LastUpdatedBy = _session.CurrentUser;
+            aEntity.CreatedById = _session.CurrentUserId;
+            aEntity.LastUpdatedById = _session.CurrentUserId;
         }
 
         Table.Add(entity);
@@ -70,7 +70,7 @@ internal class Repository<T> : IRepository<T> where T : BaseEntity
     {
         if (entity is AuditableBaseEntity aEntity)
         {
-            aEntity.LastUpdatedBy = _session.CurrentUser;
+            aEntity.LastUpdatedById = _session.CurrentUserId;
         }
 
         Table.Update(entity);

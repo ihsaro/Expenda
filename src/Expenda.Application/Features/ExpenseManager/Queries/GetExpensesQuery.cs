@@ -24,7 +24,7 @@ public class GetExpensesQueryHandler : IRequestHandler<GetExpensesQuery, Transac
 
     public async Task<TransactionResult<IEnumerable<ExpenseResponse>>> Handle(GetExpensesQuery request, CancellationToken token)
     {
-        var entities = await _repository.GetExpensesByUserId(_session.CurrentUser.Id, token);
+        var entities = await _repository.GetExpensesByUserId(_session.CurrentUserId, token);
         return new TransactionResult<IEnumerable<ExpenseResponse>>(_mapper.Map<IEnumerable<ExpenseResponse>>(entities));
     }
 }

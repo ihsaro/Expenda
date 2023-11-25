@@ -19,5 +19,5 @@ public class MonthlyBudget : AuditableBaseEntity
 
     [Required]
     [ForeignKey(nameof(ApplicationUser))]
-    public ApplicationUser Owner { get; set; } = null!;
+    public int OwnerId { get; set; }
 }

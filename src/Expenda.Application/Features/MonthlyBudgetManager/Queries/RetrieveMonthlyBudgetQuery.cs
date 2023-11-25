@@ -31,7 +31,7 @@ public class RetrieveMonthlyBudgetQueryHandler : IRequestHandler<RetrieveMonthly
 
     public async Task<TransactionResult<MonthlyBudgetResponse>> Handle(RetrieveMonthlyBudgetQuery request, CancellationToken token)
     {
-        var entity = await _repository.GetForUserByMonthAndYear(_session.CurrentUser.Id, request.Month, request.Year, token);
+        var entity = await _repository.GetForUserByMonthAndYear(_session.CurrentUserId, request.Month, request.Year, token);
 
         if (entity is null)
         {

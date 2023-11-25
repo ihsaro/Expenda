@@ -2,11 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Expenda.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Expenda.Domain.Entities.Base;
+using Microsoft.AspNetCore.Identity;
 
 namespace Expenda.Infrastructure.Persistence;
 
-internal class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
+internal class ApplicationDbContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
 {
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
     public DbSet<Expense> Expenses => Set<Expense>();
     public DbSet<MonthlyBudget> MonthlyBudgets => Set<MonthlyBudget>();
 

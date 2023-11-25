@@ -7,16 +7,15 @@ namespace Expenda.API.Security;
 
 internal class ApplicationSessionManager : IApplicationSessionManager
 {
-    public ApplicationUser CurrentUser { get; }
+    public int CurrentUserId { get; }
 
-    public ApplicationSessionManager(IHttpContextAccessor accessor, IApplicationUserManager userManager)
+    public ApplicationSessionManager(IHttpContextAccessor accessor)
     {
         var userIdIdentifier = accessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
 
         if (userIdIdentifier is null || !int.TryParse(userIdIdentifier.Value, out var id))
             throw new HttpRequestException(null, null, HttpStatusCode.Forbidden);
 
-        var user = userManager.FindByIdAsync(id).Result ?? throw new HttpRequestException(null, null, HttpStatusCode.Forbidden);
-        CurrentUser = user;
+        CurrentUserId = id;
     }
 }

@@ -5,6 +5,7 @@ using Expenda.Application.Architecture;
 using Expenda.Application.Architecture.Localization;
 using Expenda.Application.Architecture.Security;
 using Expenda.Domain.Entities;
+using Expenda.Domain.Repositories;
 using MediatR;
 
 namespace Expenda.Application.Features.UserManager.Commands;
@@ -44,12 +45,17 @@ public record RegisterUserCommandResponse
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, TransactionResult<RegisterUserCommandResponse>>
 {
     private readonly IMapper _mapper;
+    private readonly IApplicationGuestUserRepository _applicationGuestUserRepository;
     private readonly IApplicationUserManager _userManager;
     private readonly IAuthenticationMessenger _messenger;
 
-    public RegisterUserCommandHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
+    public RegisterUserCommandHandler(IMapper mapper,
+                                      IApplicationGuestUserRepository applicationGuestUserRepository,
+                                      IApplicationUserManager userManager,
+                                      IAuthenticationMessenger messenger)
     {
         _mapper = mapper;
+        _applicationGuestUserRepository = applicationGuestUserRepository;
         _userManager = userManager;
         _messenger = messenger;
     }
@@ -62,12 +68,15 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("USER_ALREADY_EXISTS")));
         }
 
-        var user = _mapper.Map<ApplicationUser>(request);
+        var result = await _userManager.CreateAsync(_mapper.Map<ApplicationUser>(request), request.Password);
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Success || result.ResultObject is null)
+        {
+            return new TransactionResult<RegisterUserCommandResponse>().AddBatchErrorMessages(result.ErrorMessages);
+        }
 
-        return result.Success ?
-            new TransactionResult<RegisterUserCommandResponse>(_mapper.Map<RegisterUserCommandResponse>(user)) :
-            new TransactionResult<RegisterUserCommandResponse>().AddBatchErrorMessages(result.ErrorMessages);
+        await _applicationGuestUserRepository.CreateUser(result.ResultObject, token);
+
+        return new TransactionResult<RegisterUserCommandResponse>(_mapper.Map<RegisterUserCommandResponse>(result.ResultObject));
     }
 }

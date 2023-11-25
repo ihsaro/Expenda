@@ -7,32 +7,43 @@ namespace Expenda.Infrastructure.Security;
 
 internal class ApplicationUserManager : IApplicationUserManager
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<IdentityUser<int>> _userManager;
 
-    public ApplicationUserManager(UserManager<ApplicationUser> userManager)
+    public ApplicationUserManager(UserManager<IdentityUser<int>> userManager)
     {
         _userManager = userManager;
     }
 
-    public async Task<TransactionResult<bool>> CreateAsync(ApplicationUser user, string password)
+    public async Task<TransactionResult<ApplicationUser?>> CreateAsync(ApplicationUser user, string password)
     {
-        var result = await _userManager.CreateAsync(user, password);
+        var identityUser = new IdentityUser<int>
+        {
+            Id = user.Id,
+            UserName = user.Username,
+            Email = user.EmailAddress
+        };
+
+        var result = await _userManager.CreateAsync(identityUser, password);
 
         if (result.Succeeded)
         {
-            return new TransactionResult<bool>(true);
+            user.Id = identityUser.Id;
+            user.CreatedById = identityUser.Id;
+            user.LastUpdatedById = identityUser.Id;
+            return new TransactionResult<ApplicationUser?>(user);
         }
 
-        var transaction = new TransactionResult<bool>(false);
+        var transaction = new TransactionResult<ApplicationUser?>();
         result.Errors.ToList().ForEach(error => transaction.AddErrorMessage(new ErrorMessage(error.Code, error.Description)));
         return transaction;
     }
 
-    public async Task<ApplicationUser?> FindByUsernameAsync(string username) => await _userManager.FindByNameAsync(username);
-
-    public async Task<ApplicationUser?> FindByIdAsync(int id) => await _userManager.FindByIdAsync(id.ToString());
-
-    public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password) => await _userManager.CheckPasswordAsync(user, password);
-
     public async Task<bool> DoesUserExist(string username, string email) => await _userManager.FindByNameAsync(username) is not null || await _userManager.FindByEmailAsync(email) is not null;
+
+    public async Task<bool> ValidateUserCredentials(string username, string password)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+        if (user == null || !await _userManager.CheckPasswordAsync(user, password)) return false;
+        return true;
+    }
 }

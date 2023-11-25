@@ -4,9 +4,9 @@ public abstract class AuditableBaseEntity : BaseEntity
 {
     public DateTime CreatedTimestamp { get; set; }
 
-    public ApplicationUser CreatedBy { get; set; } = null!;
+    public int CreatedById { get; set; }
 
     public DateTime LastUpdatedTimestamp { get; set; }
 
-    public ApplicationUser LastUpdatedBy { get; set; } = null!;
+    public int LastUpdatedById { get; set; }
 }

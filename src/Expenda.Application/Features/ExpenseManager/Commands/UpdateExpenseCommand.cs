@@ -35,7 +35,7 @@ public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand,
     {
         var entity = await _repository.GetByIdAsync(command.Id, token);
 
-        if (entity is null || entity.Owner.Id != _session.CurrentUser.Id)
+        if (entity is null || entity.OwnerId != _session.CurrentUserId)
         {
             return new TransactionResult<ExpenseResponse>()
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
