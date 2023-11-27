@@ -38,7 +38,7 @@ public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, Trans
 
     public async Task<TransactionResult<VerifyUserCommandResponse>> Handle(VerifyUserCommand request, CancellationToken token)
     {
-        if (!await _userManager.ValidateUserCredentials(request.Username, request.Password))
+        if (!await _userManager.ValidateIdentityUserCredentials(request.Username, request.Password))
         {
             return new TransactionResult<VerifyUserCommandResponse>()
                 .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("INVALID_CREDENTIALS")));

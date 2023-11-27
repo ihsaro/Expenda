@@ -62,21 +62,29 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
 
     public async Task<TransactionResult<RegisterUserCommandResponse>> Handle(RegisterUserCommand request, CancellationToken token)
     {
-        if (await _applicationUserManager.DoesUserExist(request.Username, request.EmailAddress))
+        if (await _applicationUserManager.DoesIdentityUserExist(request.Username, request.EmailAddress))
         {
             return new TransactionResult<RegisterUserCommandResponse>()
                 .AddErrorMessage(new ErrorMessage(_authenticationLocalizationMessenger.GetMessage("USER_ALREADY_EXISTS")));
         }
 
-        var result = await _applicationUserManager.CreateAsync(_mapper.Map<ApplicationUser>(request), request.Password);
+        var identityResult = await _applicationUserManager.CreateIdentityUser(_mapper.Map<ApplicationUser>(request), request.Password);
 
-        if (!result.Success || result.ResultObject is null)
+        if (!identityResult.Success || identityResult.ResultObject is null)
         {
-            return new TransactionResult<RegisterUserCommandResponse>().AddBatchErrorMessages(result.ErrorMessages);
+            return new TransactionResult<RegisterUserCommandResponse>().AddBatchErrorMessages(identityResult.ErrorMessages);
         }
 
-        await _applicationGuestUserRepository.CreateUser(result.ResultObject, token);
+        var applicationUser = identityResult.ResultObject;
 
-        return new TransactionResult<RegisterUserCommandResponse>(_mapper.Map<RegisterUserCommandResponse>(result.ResultObject));
+        var applicationUserCreationResult = await _applicationGuestUserRepository.CreateUser(applicationUser, token);
+
+        if (applicationUserCreationResult != 1)
+        {
+            return new TransactionResult<RegisterUserCommandResponse>()
+                .AddErrorMessage(new ErrorMessage(_authenticationLocalizationMessenger.GetMessage("APPLICATION_USER_NOT_CREATED")));
+        }
+
+        return new TransactionResult<RegisterUserCommandResponse>(_mapper.Map<RegisterUserCommandResponse>(applicationUser));
     }
 }

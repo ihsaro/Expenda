@@ -14,7 +14,7 @@ internal class ApplicationUserManager : IApplicationUserManager
         _userManager = userManager;
     }
 
-    public async Task<TransactionResult<ApplicationUser?>> CreateAsync(ApplicationUser user, string password)
+    public async Task<TransactionResult<ApplicationUser?>> CreateIdentityUser(ApplicationUser user, string password)
     {
         var identityUser = new IdentityUser<int>
         {
@@ -38,9 +38,9 @@ internal class ApplicationUserManager : IApplicationUserManager
         return transaction;
     }
 
-    public async Task<bool> DoesUserExist(string username, string email) => await _userManager.FindByNameAsync(username) is not null || await _userManager.FindByEmailAsync(email) is not null;
+    public async Task<bool> DoesIdentityUserExist(string username, string email) => await _userManager.FindByNameAsync(username) is not null || await _userManager.FindByEmailAsync(email) is not null;
 
-    public async Task<bool> ValidateUserCredentials(string username, string password)
+    public async Task<bool> ValidateIdentityUserCredentials(string username, string password)
     {
         var user = await _userManager.FindByNameAsync(username);
         if (user == null || !await _userManager.CheckPasswordAsync(user, password)) return false;
