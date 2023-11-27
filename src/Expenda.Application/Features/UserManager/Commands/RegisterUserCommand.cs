@@ -46,29 +46,29 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
 {
     private readonly IMapper _mapper;
     private readonly IApplicationGuestUserRepository _applicationGuestUserRepository;
-    private readonly IApplicationUserManager _userManager;
-    private readonly IAuthenticationLocalizationMessenger _messenger;
+    private readonly IApplicationUserManager _applicationUserManager;
+    private readonly IAuthenticationLocalizationMessenger _authenticationLocalizationMessenger;
 
     public RegisterUserCommandHandler(IMapper mapper,
                                       IApplicationGuestUserRepository applicationGuestUserRepository,
-                                      IApplicationUserManager userManager,
-                                      IAuthenticationLocalizationMessenger messenger)
+                                      IApplicationUserManager applicationUserManager,
+                                      IAuthenticationLocalizationMessenger authenticationLocalizationMessenger)
     {
         _mapper = mapper;
         _applicationGuestUserRepository = applicationGuestUserRepository;
-        _userManager = userManager;
-        _messenger = messenger;
+        _applicationUserManager = applicationUserManager;
+        _authenticationLocalizationMessenger = authenticationLocalizationMessenger;
     }
 
     public async Task<TransactionResult<RegisterUserCommandResponse>> Handle(RegisterUserCommand request, CancellationToken token)
     {
-        if (await _userManager.DoesUserExist(request.Username, request.EmailAddress))
+        if (await _applicationUserManager.DoesUserExist(request.Username, request.EmailAddress))
         {
             return new TransactionResult<RegisterUserCommandResponse>()
-                .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("USER_ALREADY_EXISTS")));
+                .AddErrorMessage(new ErrorMessage(_authenticationLocalizationMessenger.GetMessage("USER_ALREADY_EXISTS")));
         }
 
-        var result = await _userManager.CreateAsync(_mapper.Map<ApplicationUser>(request), request.Password);
+        var result = await _applicationUserManager.CreateAsync(_mapper.Map<ApplicationUser>(request), request.Password);
 
         if (!result.Success || result.ResultObject is null)
         {
