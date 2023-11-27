@@ -18,9 +18,9 @@ public class ListMonthlyTotalExpensesQueryHandler : IRequestHandler<ListMonthlyT
 {
     private readonly IMapper _mapper;
     private readonly IApplicationUserManager _userManager;
-    private readonly IAuthenticationMessenger _messenger;
+    private readonly IAuthenticationLocalizationMessenger _messenger;
 
-    public ListMonthlyTotalExpensesQueryHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationMessenger messenger)
+    public ListMonthlyTotalExpensesQueryHandler(IMapper mapper, IApplicationUserManager userManager, IAuthenticationLocalizationMessenger messenger)
     {
         _mapper = mapper;
         _userManager = userManager;

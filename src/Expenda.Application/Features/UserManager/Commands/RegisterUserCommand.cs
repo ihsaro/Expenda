@@ -47,12 +47,12 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, T
     private readonly IMapper _mapper;
     private readonly IApplicationGuestUserRepository _applicationGuestUserRepository;
     private readonly IApplicationUserManager _userManager;
-    private readonly IAuthenticationMessenger _messenger;
+    private readonly IAuthenticationLocalizationMessenger _messenger;
 
     public RegisterUserCommandHandler(IMapper mapper,
                                       IApplicationGuestUserRepository applicationGuestUserRepository,
                                       IApplicationUserManager userManager,
-                                      IAuthenticationMessenger messenger)
+                                      IAuthenticationLocalizationMessenger messenger)
     {
         _mapper = mapper;
         _applicationGuestUserRepository = applicationGuestUserRepository;

@@ -27,9 +27,9 @@ public class SetMonthlyBudgetCommandHandler : IRequestHandler<SetMonthlyBudgetCo
     private readonly IMonthlyBudgetRepository _repository;
     private readonly IMapper _mapper;
     private readonly IApplicationSessionManager _session;
-    private readonly IMonthlyBudgetMessenger _messenger;
+    private readonly IMonthlyBudgetLocalizationMessenger _messenger;
 
-    public SetMonthlyBudgetCommandHandler(IMonthlyBudgetRepository repository, IMapper mapper, IApplicationSessionManager session, IMonthlyBudgetMessenger messenger)
+    public SetMonthlyBudgetCommandHandler(IMonthlyBudgetRepository repository, IMapper mapper, IApplicationSessionManager session, IMonthlyBudgetLocalizationMessenger messenger)
     {
         _repository = repository;
         _mapper = mapper;

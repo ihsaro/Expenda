@@ -26,9 +26,9 @@ public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, Trans
     private readonly IApplicationGuestUserRepository _applicationGuestUserRepository;
     private readonly IApplicationUserManager _userManager;
     private readonly IApplicationTokenManager _tokenManager;
-    private readonly IAuthenticationMessenger _messenger;
+    private readonly IAuthenticationLocalizationMessenger _messenger;
 
-    public VerifyUserCommandHandler(IApplicationGuestUserRepository applicationGuestUserRepository, IApplicationUserManager userManager, IApplicationTokenManager tokenManager, IAuthenticationMessenger messenger)
+    public VerifyUserCommandHandler(IApplicationGuestUserRepository applicationGuestUserRepository, IApplicationUserManager userManager, IApplicationTokenManager tokenManager, IAuthenticationLocalizationMessenger messenger)
     {
         _applicationGuestUserRepository = applicationGuestUserRepository;
         _userManager = userManager;

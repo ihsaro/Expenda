@@ -19,32 +19,35 @@ public class UpdateExpenseCommand : CreateExpenseCommand
 public class UpdateExpenseCommandHandler : IRequestHandler<UpdateExpenseCommand, TransactionResult<ExpenseResponse>>
 {
     private readonly IMapper _mapper;
-    private readonly IApplicationSessionManager _session;
-    private readonly IExpenseMessenger _messenger;
-    private readonly IExpenseRepository _repository;
+    private readonly IApplicationSessionManager _applicationSessionManager;
+    private readonly IExpenseLocalizationMessenger _expenseLocalizationMessenger;
+    private readonly IExpenseRepository _expenseRepository;
 
-    public UpdateExpenseCommandHandler(IMapper mapper, IApplicationSessionManager session, IExpenseMessenger messenger, IExpenseRepository repository)
+    public UpdateExpenseCommandHandler(IMapper mapper,
+                                       IApplicationSessionManager applicationSessionManager,
+                                       IExpenseLocalizationMessenger expenseLocalizationMessenger,
+                                       IExpenseRepository expenseRepository)
     {
         _mapper = mapper;
-        _session = session;
-        _messenger = messenger;
-        _repository = repository;
+        _applicationSessionManager = applicationSessionManager;
+        _expenseLocalizationMessenger = expenseLocalizationMessenger;
+        _expenseRepository = expenseRepository;
     }
 
     public async Task<TransactionResult<ExpenseResponse>> Handle(UpdateExpenseCommand command, CancellationToken token)
     {
-        var entity = await _repository.GetByIdAsync(command.Id, token);
+        var entity = await _expenseRepository.GetByIdAsync(command.Id, token);
 
-        if (entity is null || entity.OwnerId != _session.CurrentUserId)
+        if (entity is null || entity.OwnerId != _applicationSessionManager.CurrentUserId)
         {
             return new TransactionResult<ExpenseResponse>()
-                .AddErrorMessage(new ErrorMessage(_messenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
+                .AddErrorMessage(new ErrorMessage(_expenseLocalizationMessenger.GetMessage("EXPENSE_DOES_NOT_EXIST")));
         }
 
         entity = _mapper.Map<Expense>(command);
-        _repository.Update(entity);
+        _expenseRepository.Update(entity);
 
-        await _repository.CommitAsync(token);
+        await _expenseRepository.CommitAsync(token);
 
         return new TransactionResult<ExpenseResponse>(_mapper.Map<ExpenseResponse>(entity));
     }

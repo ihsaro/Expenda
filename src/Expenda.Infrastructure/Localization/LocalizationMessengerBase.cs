@@ -4,11 +4,11 @@ using Expenda.Application.Architecture.Localization.Models;
 
 namespace Expenda.Infrastructure.Localization;
 
-internal abstract class MessengerBase<T> : IMessengerBase
+internal abstract class LocalizationMessengerBase<T> : ILocalizationMessengerBase
 {
     private readonly IStringLocalizer<T> _localizer;
 
-    public MessengerBase(IStringLocalizer<T> localizer) =>
+    public LocalizationMessengerBase(IStringLocalizer<T> localizer) =>
         _localizer = localizer;
 
     public BaseMessage GetMessage(string code)

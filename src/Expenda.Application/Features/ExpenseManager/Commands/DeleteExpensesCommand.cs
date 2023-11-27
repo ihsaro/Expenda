@@ -13,28 +13,31 @@ public class DeleteExpensesCommand : IRequest<TransactionResult<bool>>
 
 public class DeleteExpensesCommandHandler : IRequestHandler<DeleteExpensesCommand, TransactionResult<bool>>
 {
-    private readonly IExpenseRepository _repository;
-    private readonly IApplicationSessionManager _session;
-    private readonly IExpenseMessenger _messenger;
+    private readonly IExpenseRepository _expenseRepository;
+    private readonly IApplicationSessionManager _applicationSessionManager;
+    private readonly IExpenseLocalizationMessenger _expenseLocalizationMessenger;
 
-    public DeleteExpensesCommandHandler(IExpenseRepository repository, IApplicationSessionManager session, IExpenseMessenger messenger)
+    public DeleteExpensesCommandHandler(IExpenseRepository expenseRepository,
+                                        IApplicationSessionManager applicationSessionManager,
+                                        IExpenseLocalizationMessenger expenseLocalizationMessenger)
     {
-        _repository = repository;
-        _session = session;
-        _messenger = messenger;
+        _expenseRepository = expenseRepository;
+        _applicationSessionManager = applicationSessionManager;
+        _expenseLocalizationMessenger = expenseLocalizationMessenger;
     }
 
     public async Task<TransactionResult<bool>> Handle(DeleteExpensesCommand command, CancellationToken token)
     {
-        var entities = await _repository.GetExpensesByIds(command.Ids, token);
+        var entities = await _expenseRepository.GetExpensesByIds(command.Ids, token);
 
-        if (entities.Any(x => x.OwnerId != _session.CurrentUserId))
+        if (entities.Any(x => x.OwnerId != _applicationSessionManager.CurrentUserId))
         {
-            return new TransactionResult<bool>(false).AddErrorMessage(new ErrorMessage(_messenger.GetMessage("ONE_OR_MORE_EXPENSES_DO_NOT_EXIST")));
+            return new TransactionResult<bool>(false)
+                .AddErrorMessage(new ErrorMessage(_expenseLocalizationMessenger.GetMessage("ONE_OR_MORE_EXPENSES_DO_NOT_EXIST")));
         }
         
-        _repository.BatchDelete(entities);
-        await _repository.CommitAsync(token);
+        _expenseRepository.BatchDelete(entities);
+        await _expenseRepository.CommitAsync(token);
 
         return new TransactionResult<bool>(true);
     }

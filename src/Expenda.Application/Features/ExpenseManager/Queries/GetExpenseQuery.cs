@@ -18,11 +18,11 @@ public class GetExpenseQuery : IRequest<TransactionResult<ExpenseResponse>>
 public class GetExpenseQueryHandler : IRequestHandler<GetExpenseQuery, TransactionResult<ExpenseResponse>>
 {
     private readonly IApplicationSessionManager _session;
-    private readonly IExpenseMessenger _messenger;
+    private readonly IExpenseLocalizationMessenger _messenger;
     private readonly IExpenseRepository _repository;
     private readonly IMapper _mapper;
 
-    public GetExpenseQueryHandler(IApplicationSessionManager session, IExpenseMessenger messenger, IExpenseRepository repository, IMapper mapper)
+    public GetExpenseQueryHandler(IApplicationSessionManager session, IExpenseLocalizationMessenger messenger, IExpenseRepository repository, IMapper mapper)
     {
         _session = session;
         _messenger = messenger;

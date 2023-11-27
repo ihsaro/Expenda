@@ -19,9 +19,9 @@ public class RetrieveMonthlyBudgetQueryHandler : IRequestHandler<RetrieveMonthly
     private readonly IMapper _mapper;
     private readonly IApplicationSessionManager _session;
     private readonly IMonthlyBudgetRepository _repository;
-    private readonly IMonthlyBudgetMessenger _messenger;
+    private readonly IMonthlyBudgetLocalizationMessenger _messenger;
 
-    public RetrieveMonthlyBudgetQueryHandler(IMapper mapper, IApplicationSessionManager session, IMonthlyBudgetRepository repository, IMonthlyBudgetMessenger messenger)
+    public RetrieveMonthlyBudgetQueryHandler(IMapper mapper, IApplicationSessionManager session, IMonthlyBudgetRepository repository, IMonthlyBudgetLocalizationMessenger messenger)
     {
         _mapper = mapper;
         _session = session;
